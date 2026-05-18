@@ -1545,7 +1545,7 @@ syn region methodBlock
          \ transparent keepend extend fold
          \ contains=startBlock,endBlock,orcaBlock,orcaNumber,orcaString,orcaFloat,
          \ orcaMethodInt,orcaMethodBool,orcaMethodReal,orcaMethodString,
-         \ orcaMethodAlias,orcaMethodLogical
+         \ orcaMethodAlias,orcaMethodLogical,orcaBlockParam
 
 " ============================================================
 " Block parameters (inside % ... end blocks)
@@ -1698,6 +1698,121 @@ syn match orcaJob "\$new_job"
 " coordinate input
 syn match coordBlock "\*\s*\(xyz\(file\)\?\|int\|internal\|gzmt\(file\)\?\|gbwfile\|pdbfile\)"
 
+" ============================================================
+" Block parameter names (878 unique, sourced from ORCA 6.1 manual section 2.1.6)
+" Kept in sync with g:orca_block_params in ftplugin/orca.vim.
+" ============================================================
+syn keyword orcaBlockParam contained AutoTRAH AutoTRAHIter AutoTRAHNInter BFCut ConvCheckMode Convergence ConvForced D3Thresh
+syn keyword orcaBlockParam contained D4Thresh D5Thresh Damp DampErr DIIS DIISBfac DIISMaxEq DIISMaxIt
+syn keyword orcaBlockParam contained DIISStart EasyConv ETol FOD FracOcc GTol GuessMode HCore
+syn keyword orcaBlockParam contained KDIIS LSCFbeta LSD LShift MaxIter NoDamp NoDIIS NoLShift
+syn keyword orcaBlockParam contained NormalConv NoSmear NoSOSCF NoTRAH Precond ROKS Rotate RTol
+syn keyword orcaBlockParam contained ShiftErr SlowConv SMD Smear SOSCF SOSCFMaxIt SOSCFStart STol
+syn keyword orcaBlockParam contained TCut TCutInt Thresh TolE TolErr TolFacMicro TolG TolMAXP
+syn keyword orcaBlockParam contained TolRMSP TolX TRAH VerySlowConv Z_Tol AddAuxCGTO AddAuxJGTO AddAuxJKGTO
+syn keyword orcaBlockParam contained AddCABSGTO AddGTO AllowGhostECP AutoAux AutoAuxLLimit AutoAuxLmax AutoAuxSize AutoAuxTightB
+syn keyword orcaBlockParam contained AuxC AuxJ AuxJC AuxJK Basis CABS Decontract DecontractAuxC
+syn keyword orcaBlockParam contained DecontractAuxJ DecontractAuxJK DecontractBas DecontractCABS DelECP ECP FragAuxC FragAuxJ
+syn keyword orcaBlockParam contained FragAuxJK FragBasis FragCABS FragECP GhostECP GTOAuxCName GTOAuxJKName GTOAuxJName
+syn keyword orcaBlockParam contained GTOAuxName GTOCABSName GTOName NewAuxCGTO NewAuxJGTO NewAuxJKGTO NewCABSGTO NewECP
+syn keyword orcaBlockParam contained NewGTO NoDecontractAuxC NoDecontractAuxJ NoDecontractAuxJK NoDecontractBas NoECP OldAutoAux PCDThresh
+syn keyword orcaBlockParam contained PCDTrimAuxC PCDTrimAuxJ PCDTrimAuxJK PCDTrimBas ReadFragAuxC ReadFragAuxJ ReadFragAuxJK ReadFragBasis
+syn keyword orcaBlockParam contained ReadFragCABS ReadFragECP SThresh AddExtraBonds AddExtraBonds_MaxDist AddExtraBonds_MaxLength Almloef AUTOFRAG
+syn keyword orcaBlockParam contained BFGS BIAS Bofill BOXPOT Calc_Hess ConnectFragments ConstrainFragments Constraints
+syn keyword orcaBlockParam contained COpt ELLIPSEPOT EV_Reverse Ext_Params EXTOPTEXE FixFrags Frags GFNFF
+syn keyword orcaBlockParam contained Hess_Internal HESS_MinEV HESS_Modification Hueckel Hybrid_Hess InHess InHessName Lindh
+syn keyword orcaBlockParam contained LooseOpt MaxStep MORead NormalOpt NResetHess NStepsInResetHess NumFreq NumHess
+syn keyword orcaBlockParam contained Opt OptElement OptGuess PAtom PModel Powell PrintInternalHess ProjectTR
+syn keyword orcaBlockParam contained Read Recalc_Hess ReducePrint ReduceRedInts RelaxFrags RelaxHFrags RigidFrags RunTyp
+syn keyword orcaBlockParam contained Scan Schlegel Shift_Diag SPHEREPOT Step Swart TightOpt TightSCF
+syn keyword orcaBlockParam contained TolMaxD TolMaxG TolRMSD TolRMSG Trust Update UseSOSCF VeryTightOpt
+syn keyword orcaBlockParam contained XTB0 XTB1 XTB2 CIM DFT Docker EDA Energy
+syn keyword orcaBlockParam contained EnergyGrad EnGrad GeometryOpt Gradient HF MD Method MM
+syn keyword orcaBlockParam contained ModeTrajectory MTR NMGrad NMGradient NMScan NormalModeGradient NormalModeScan PrintThermoChem
+syn keyword orcaBlockParam contained PropertiesOnly ROHF SP Trajectory AnFreq CutOffFreq NumGrad Direct
+syn keyword orcaBlockParam contained FCut IntAccX LoosePNO NormalPNO NoIter Q1Opt RI TCutPNO
+syn keyword orcaBlockParam contained TightPNO Z_GridX Z_IntAccX CCSD Conv FB IAOBOYS IAOIBO
+syn keyword orcaBlockParam contained LMP2ScaleTCutPNO LocTol MaxDIIS MP3 QCISD ActConstraints CIStep DoFullSemiclassical
+syn keyword orcaBlockParam contained DoubleShellMO DThresh FlipSpin FreezeActive FreezeGrad FreezeIE GradScaling MaxM
+syn keyword orcaBlockParam contained MaxRot MinShift NOrb PrintGState PrintLevel RIJCOSX ShiftDn SuperCI_PT
+syn keyword orcaBlockParam contained SwitchIter SwitchStep SymThresh TrafoStep CPCMEQ DecomposeFosc DoNTO DoSoc
+syn keyword orcaBlockParam contained DOTRANS EnStep EThresh EWin FIR FOLLOWIROOT IRoot IROOTLIST
+syn keyword orcaBlockParam contained IRootMult MaxCore MaxDim Mode NRoots NTOStates NTOThresh OrbWin
+syn keyword orcaBlockParam contained PThresh PTLimit TDA TPrint TROOTLIST GIAO_2el LocOrbGBW Mass2016
+syn keyword orcaBlockParam contained NMRCoal NMREquiv NMRSpecFreq SpinSpinAtomPairs SpinSpinRThresh nprocs nprocs_world nprocs_group
+syn keyword orcaBlockParam contained ACCURACY ALPBSOLVENT DOALPB DOCPCMX DODDCOSMO DoMP2 EPSILON ETEMP
+syn keyword orcaBlockParam contained READXTBPARAM SmearTemp UseXTBMixer VERSION XTB XTBFF XTBFOD XTBINPUTSTRING
+syn keyword orcaBlockParam contained XTBINPUTSTRING2 XTBPARAMFILE WRITEXTBPARAM AIM KeepTransDensity LargePrint MiniPrint NoPrintMOs
+syn keyword orcaBlockParam contained NoPropFile NoReducedPop NormalPrint PDBFILE Print PrintBasis PrintGap PrintMOs
+syn keyword orcaBlockParam contained ReducedPop SmallPrint UNO XYZFILE P_AtCharges_L P_AtCharges_M P_AtomBasis P_AtomDensFit
+syn keyword orcaBlockParam contained P_AtomExpVal P_AtPopMO_L P_AtPopMO_M P_Basis P_BondOrder_L P_BondOrder_M P_Cartesian P_Density
+syn keyword orcaBlockParam contained P_DFTD P_DFTD_GRAD P_DIISError P_DIISMat P_Fockian P_FragBondOrder_L P_FragBondOrder_M P_FragCharges_L
+syn keyword orcaBlockParam contained P_FragCharges_M P_Fragments P_FragOvlMO_L P_FragOvlMO_M P_FragPopMO_L P_FragPopMO_M P_G1EL2EL P_GuessOrb
+syn keyword orcaBlockParam contained P_Hirshfeld P_InputFile P_Internal P_Iter_C P_Iter_F P_Iter_P P_KinEn P_Loewdin
+syn keyword orcaBlockParam contained P_Mayer P_MBIS P_MOs P_Mulliken P_NatPop P_NPA P_OneElec P_OrbCharges_L
+syn keyword orcaBlockParam contained P_OrbCharges_M P_OrbEn P_OrbPopMO_L P_OrbPopMO_M P_Overlap P_ReducedOrbPop_L P_ReducedOrbPop_M P_ReducedOrbPopMO_L
+syn keyword orcaBlockParam contained P_ReducedOrbPopMO_M P_S12 P_SCFInfo P_SCFIterInfo P_SCFMemInfo P_SCFSTABANA P_SpinDensity P_Sym_Salc
+syn keyword orcaBlockParam contained P_Symmetry P_UNO_AtPopMO_L P_UNO_AtPopMO_M P_UNO_FragPopMO_L P_UNO_FragPopMO_M P_UNO_OccNum P_UNO_OrbPopMO_L P_UNO_OrbPopMO_M
+syn keyword orcaBlockParam contained P_UNO_ReducedOrbPopMO_L P_UNO_ReducedOrbPopMO_M DKH DKH1 DLU FiniteNuc IntAcc IORA
+syn keyword orcaBlockParam contained LightAtomThresh ModelDens ModelPot OneCenter Order PictureChange Rel1C RelDLU
+syn keyword orcaBlockParam contained RelFull ScaleZORA SpecialGridIntAcc StorageLevel VELOCITY X2C Xalpha ZORA
+syn keyword orcaBlockParam contained Corrected COUPLED CPCMccm Final Outlying SMD18 Accel Anneal
+syn keyword orcaBlockParam contained Append Atom Cell Celsius CenterCOM Colvar Colvars Constraint
+syn keyword orcaBlockParam contained CoordNumber Cube Cutoff DCD Define Define_Region Dihedral Distance
+syn keyword orcaBlockParam contained Dump Each Fixed Format Gaussian Group Harmonic Height
+syn keyword orcaBlockParam contained HillSpawn History Initvel Kelvin Last List Lower Manage_Colvar
+syn keyword orcaBlockParam contained Manage_Colvars Manage_Region Massive MaxGrad Metadynamics Minimize MTS Noise
+syn keyword orcaBlockParam contained Noprint Position Pressure Rad Ramp Randomize Range Rect
+syn keyword orcaBlockParam contained Region Remove RemoveAtoms Replace Reset Restart Restraint Restraints
+syn keyword orcaBlockParam contained Rhomb Rigid RMSGrad Run Scale SCFLog Screendump Sigma
+syn keyword orcaBlockParam contained Sphere Spring StepLimit Steps Store Stride Target TempConv
+syn keyword orcaBlockParam contained Temperature Thermostat Thermostats Timecon Timestep Upper Vectors Wall
+syn keyword orcaBlockParam contained Weights WellTempered Yoshida ActiveAtoms ActiveCoreAtoms ActiveCoreExtension_Type ActiveCore_Extension ActiveCore_Type
+syn keyword orcaBlockParam contained ChargeAlteration CheckAutoFragBoundaries CheckAutoFragForQMGaps COV_BONDS Dist_AtomsAroundOpt Do_NB_For_Fixed_Fixed Electrostatic Embedding
+syn keyword orcaBlockParam contained ExtendActiveRegion Frag Fragments Mechanical OptRegion_FixedAtoms ORCAFFFilename PrintOptRegion PrintOptRegionExt
+syn keyword orcaBlockParam contained PrintPDB QMAtoms QMCore_Extension QMCore_Type QMCoreAtoms QMCoreExtension_Type QMGap_MinLength RCD
+syn keyword orcaBlockParam contained RIGID_MM_WATER Scale_CS Scale_RCD Use_Active_InfoFromPDB Coulomb14Scaling CoulombCutOff DielecConst LJCutOffInner
+syn keyword orcaBlockParam contained LJCutOffOuter ShiftForceCoulomb SwitchForceLJ ABS ABSQ ABSV Algebraic Available
+syn keyword orcaBlockParam contained CD CellVolumeFraction DoHemiSphereSC DoSymetricSC FFMIO IAOBasis KeepDens LIVVO
+syn keyword orcaBlockParam contained LoadQCCluster LocMet NEWBOYS ORBITAL RIXS SOC SOCABS SOCABSQ
+syn keyword orcaBlockParam contained SOCCD SymmetryOperations TRANSABS VIRT XAS XASS XASSOC XES
+syn keyword orcaBlockParam contained XESSOC ZETA_D AllSingles CIType DavidsonOpt EUnselOpt IntMode MaxMemVec
+syn keyword orcaBlockParam contained MRACPF MRAQCC MRCI MRDDCI1 MRDDCI2 MRDDCI3 RefWeight RITrafo
+syn keyword orcaBlockParam contained Second SORCI Tnat Tpre Tsel UseIVOs Do_HM_ia Do_HM_is
+syn keyword orcaBlockParam contained Do_HM_sa Do_ia Do_is Do_isa Do_ista Do_LM_ia Do_LM_is Do_LM_sa
+syn keyword orcaBlockParam contained Do_LM_ss Do_sa DoCD DoDipoleLength DoDipoleVelocity DoElastic DoGenROCIS DoHigherMult
+syn keyword orcaBlockParam contained DoLoc DoLowerMult DoMCD DoNDO DoPNO DoRIXS DoRIXSSOC LocOrbWin
+syn keyword orcaBlockParam contained NDOStates NDOThresh PlotDiffDens PlotSOCDiffDens ReferenceMult XASelems DoLocking DoOlsen
+syn keyword orcaBlockParam contained DoOrbResp MaxRed PreCondMaxRed PreCondType PrintRHSVec PrintRspVec PrintWF TolPrintVec
+syn keyword orcaBlockParam contained TolR Conventional PreConMaxRed CC2 CC3 CCD CCSDT CID
+syn keyword orcaBlockParam contained CISD CISDT D3TPre D4TPre Density Density2 DIISStartIter ExcludeHigherExcDIIS
+syn keyword orcaBlockParam contained Irrep KeepInts LevelShift MDCI MP2 MP4 MP5 Mult
+syn keyword orcaBlockParam contained NatOrbs NEl NoRI NThresh RunROHFasUHF SOCoptions TrafoType UseOldInts
+syn keyword orcaBlockParam contained CAR CWAF CWAR FreqAlter MWAD NMList NRRPPoints NTr
+syn keyword orcaBlockParam contained RamanOrder RRPRange States TK ALIGN AUTOWALL BONDFACTOR CONFDEGEN
+syn keyword orcaBlockParam contained CONFTEMP ENDIFF EnforceStrictConvergence FREEFRAGMENTS FREEHETEROATOMS FREENONHATOMS FREEZEAMIDES FREEZEANGLES
+syn keyword orcaBlockParam contained FREEZEBONDS FREEZECISTRANS GFNUPHILL KEEPWORKERDATA MAXCOORDNUMBER MAXCORESOPT MAXEN MAXENPERATOM
+syn keyword orcaBlockParam contained MAXENTROPY MAXGLOBALITER MAXITERMULT MAXOPTITER MAXTOPODIFF MINDELS MINGLOBALITER NWorkers
+syn keyword orcaBlockParam contained PRINTINTERNALS RANDOMSEED READENSEMBLE RMSD RMSDMETRIC ROTCONSTDIFF SKIPINITIALOPT SLOPPYOPT
+syn keyword orcaBlockParam contained TEMPLIST TOPOBREAK UPHILLATOMS WORKERRANDOMSTART ALLOWMETALCOORD AUTOCOORDSYS CHECKTOPO COMPLETEDOCK
+syn keyword orcaBlockParam contained CUMULATIVE DOCKLEVEL EVPES FIXHOST GRIDCENTER GRIDCENTERATOMS GRIDEXTENT GUEST
+syn keyword orcaBlockParam contained GUESTCHARGE GUESTMULT HOST MBONDFAC NOOPT NOPT NORMALDOCK NREPEATGUEST
+syn keyword orcaBlockParam contained OPTLEVEL POPDENSITY POPSIZE PREOPT QUICKDOCK SWARMMAXITER SWARMMINITER SWARMPES
+syn keyword orcaBlockParam contained SWARMPOPDENSITY SWARMPOPSIZE ALPB CLUSTERMODE DROPLET Einter FIXSOLUTE NSOLV
+syn keyword orcaBlockParam contained RADIUS RANDOMSOLV SOLVENTFILE STOCHASTIC USEEEQCHARGES VACUUMSEARCH WALLFAC CleanUpCoords
+syn keyword orcaBlockParam contained CleanUpGeom CleanUpGrad CleanUpGradient PointGroup PreferC2v PrtSALC SymRelaxOpt SymRelaxSCF
+syn keyword orcaBlockParam contained UseSym UseSymmetry ELDENSMP2UR Gaussian_Cube HPGL MO Molekel Origin
+syn keyword orcaBlockParam contained SPINDENS SPINDENSAUTOCIRE SPINDENSAUTOCIUR SPINDENSMDCI SPINDENSMP2RE SPINDENSMP2UR SPINDENSOO UCO
+syn keyword orcaBlockParam contained AllPop BW CenterOfCoords CenterOfEachAtom CenterOfMass CenterOfNucCharge CenterXYZ COSMO
+syn keyword orcaBlockParam contained DIPOLE FMOPop GRID Loewdin Mayer MBIS MBIS_CHARGETHRESH MBIS_LARGEPRINT
+syn keyword orcaBlockParam contained MBIS_ORIGIN_MULT MBIS_ORIMULT_XYZ Mulliken NBO NPA RMAX VDWRADII DELKEYLIST
+syn keyword orcaBlockParam contained NCS Polar ORCA_ESD AABackbone AASCFineGrained AASideChains Aminoacids Atomic
+syn keyword orcaBlockParam contained Backbone Connectivity Definition Deleted DoInterFragBonds Ext_lib Extend Extlib
+syn keyword orcaBlockParam contained FragProc FunctionalGroups FuseAtomPairs FuseByAtoms NABackbone NABBFineGrained NASideChains NAME
+syn keyword orcaBlockParam contained NotAssigned NucleoticAcid SeqBackbone SEQNABackbone Solvents STOREFRAGS TopolFile Usetopology
+syn keyword orcaBlockParam contained Water FRAG1 FRAG1_C FRAG1_FS FRAG1_M FRAG1_METHODFILE FRAG1_SF FRAG2
+syn keyword orcaBlockParam contained FRAG2_C FRAG2_M FRAG2_METHODFILE FRAG2_SF MO2 Pauli
+
 syn match orcaComment "#[^#]*\(#\|$\)"
 syn region orcaString start=+"+ end=+"+
 syn match orcaNumber	display "\<\d\+\>"
@@ -1734,4 +1849,5 @@ hi def link orcaMethodBool Type
 hi def link orcaMethodReal Type
 hi def link orcaMethodString Type
 hi def link orcaMethodAlias Identifier
+hi def link orcaBlockParam Type
 hi def link orcaMethodLogical Boolean
