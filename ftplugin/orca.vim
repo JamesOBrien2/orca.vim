@@ -256,7 +256,7 @@ if !exists("g:orca_block_params")
     \ 'RemoveAtoms', 'Replace', 'Reset', 'Restart', 'Restraint', 'Restraints',
     \ 'Rhomb', 'Rigid', 'RMSGrad', 'Run', 'Scale', 'SCFLog', 'Screendump', 'Sigma',
     \ 'Sphere', 'Spring', 'StepLimit', 'Steps', 'Store', 'Stride', 'Target',
-    \ 'TempConv', 'Temperature', 'Thermostat', 'Thermostats', 'Timecon', 'Timestep',
+    \ 'Temp', 'TempConv', 'Temperature', 'Thermostat', 'Thermostats', 'Timecon', 'Timestep',
     \ 'Upper', 'Vectors', 'Velocity', 'Wall', 'Weights', 'WellTempered', 'Yoshida']
 
   let g:orca_block_params['qmmm'] = [
@@ -407,7 +407,7 @@ if !exists("g:orca_block_params")
     \ 'Solvents', 'STOREFRAGS', 'TopolFile', 'Usetopology', 'Water']
 
   let g:orca_block_params['eda'] = [
-    \ 'EDA', 'FRAG1', 'FRAG1_C', 'FRAG1_FS', 'FRAG1_M', 'FRAG1_METHODFILE',
+    \ 'DoEDA', 'EDA', 'FRAG1', 'FRAG1_C', 'FRAG1_FS', 'FRAG1_M', 'FRAG1_METHODFILE',
     \ 'FRAG1_SF', 'FRAG2', 'FRAG2_C', 'FRAG2_M', 'FRAG2_METHODFILE', 'FRAG2_SF',
     \ 'MO2', 'MP2', 'Pauli', 'Rotate']
 
