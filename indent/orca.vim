@@ -22,9 +22,9 @@ function! OrcaIndent(lnum)
   let curline  = getline(a:lnum)
   let prevline = getline(prev)
 
-  " 'end' on current line → column 0
+  " 'end' on current line → dedent one level (0 for outer block, indented for sub-blocks)
   if curline =~? '^\s*end\>'
-    return 0
+    return max(0, indent(prev) - shiftwidth())
   endif
 
   " After a %block line → indent one level (4 spaces)

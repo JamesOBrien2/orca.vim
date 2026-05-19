@@ -35,16 +35,27 @@ if !exists("g:orca_block_params")
   let g:orca_block_params = {}
 
   let g:orca_block_params['scf'] = [
-    \ 'AutoTRAH', 'AutoTRAHIter', 'AutoTRAHNInter', 'BFCut', 'ConvCheckMode',
+    \ 'AlphaConf', 'AutoStart', 'AutoTRAH', 'AutoTRAHIter', 'AutoTRAHNInter',
+    \ 'AutoTRAHTol', 'BetaConf', 'BFCut', 'CNVDIIS', 'ConvCheckMode',
     \ 'Convergence', 'ConvForced', 'D3Thresh', 'D4Thresh', 'D5Thresh',
-    \ 'Damp', 'DampErr', 'DIIS', 'DIISBfac', 'DIISMaxEq', 'DIISMaxIt', 'DIISStart',
-    \ 'EasyConv', 'ETol', 'FOD', 'FracOcc', 'GTol', 'GuessMode', 'HCore', 'KDIIS',
-    \ 'LSCFbeta', 'LSD', 'LShift', 'MaxIter', 'NoDamp', 'NoDIIS', 'NoLShift',
-    \ 'NormalConv', 'NoSmear', 'NoSOSCF', 'NoTRAH', 'Precond', 'ROKS', 'Rotate',
-    \ 'RTol', 'ShiftErr', 'SlowConv', 'SMD', 'Smear', 'SOSCF', 'SOSCFMaxIt',
-    \ 'SOSCFStart', 'STol', 'TCut', 'TCutInt', 'Thresh', 'TolE', 'TolErr',
-    \ 'TolFacMicro', 'TolG', 'TolMAXP', 'TolRMSP', 'TolX', 'TRAH', 'VerySlowConv',
-    \ 'Z_Tol']
+    \ 'Damp', 'DampErr', 'DeltaSCFFromGS', 'DIIS', 'DIISBfac', 'DIISMaxEq',
+    \ 'DIISMaxIt', 'DIISStart', 'DirectResetFreq', 'DoMOM',
+    \ 'EasyConv', 'EField', 'EFieldOrigin', 'ETol', 'FOD', 'FracOcc',
+    \ 'GTol', 'Guess', 'GuessMix', 'GuessMode', 'HCore', 'HFTyp',
+    \ 'IonizeAlpha', 'IonizeBeta', 'KeepInitialRef', 'KeepInts', 'KDIIS',
+    \ 'LSCFalpha', 'LSCFbeta', 'LSD', 'LShift', 'MaxC', 'MaxDisk',
+    \ 'MaxIntMem', 'MaxIter', 'MOInp', 'NoDamp', 'NoDIIS', 'NoLShift',
+    \ 'NormalConv', 'NoSmear', 'NoSOSCF', 'NoTRAH', 'PMOM', 'Precond',
+    \ 'QField', 'ROKS', 'Rotate', 'RTol', 'SCFMode', 'ShiftErr', 'SlowConv',
+    \ 'SMD', 'Smear', 'SOSCFBlockDiag', 'SOSCFConstrainedMaxStep',
+    \ 'SOSCFConstraints', 'SOSCFConvFactor', 'SOSCFHessUp', 'SOSCFMaxIt',
+    \ 'SOSCFMaxStep', 'SOSCFStart', 'SOSCF',
+    \ 'STABDTol', 'STABEWIN', 'STABlambda', 'STABMaxDim', 'STABMaxIter',
+    \ 'STABNGuess', 'STABNRoots', 'STABORBWin', 'STABPerform',
+    \ 'STABRestartUHFifUnstable', 'STABRTol',
+    \ 'STol', 'TCut', 'TCutInt', 'Thresh', 'TolE', 'TolErr',
+    \ 'TolFacMicro', 'TolG', 'TolMAXP', 'TolRMSP', 'TolX', 'TRAH',
+    \ 'VerySlowConv', 'Z_Tol']
 
   let g:orca_block_params['basis'] = [
     \ 'AddAuxCGTO', 'AddAuxJGTO', 'AddAuxJKGTO', 'AddCABSGTO', 'AddGTO',
@@ -61,70 +72,139 @@ if !exists("g:orca_block_params")
     \ 'ReadFragBasis', 'ReadFragCABS', 'ReadFragECP', 'SThresh']
 
   let g:orca_block_params['geom'] = [
-    \ 'AddExtraBonds', 'AddExtraBonds_MaxDist', 'AddExtraBonds_MaxLength', 'Almloef',
-    \ 'AUTOFRAG', 'BFGS', 'BIAS', 'Bofill', 'BOXPOT', 'Calc_Hess',
-    \ 'ConnectFragments', 'ConstrainFragments', 'Constraints', 'Convergence',
-    \ 'COpt', 'ELLIPSEPOT', 'EV_Reverse', 'Ext_Params', 'EXTOPTEXE', 'FixFrags',
-    \ 'Frags', 'GFNFF', 'Hess_Internal', 'HESS_MinEV', 'HESS_Modification',
-    \ 'Hueckel', 'Hybrid_Hess', 'InHess', 'InHessName', 'Lindh', 'LooseOpt',
-    \ 'MaxIter', 'MaxStep', 'MORead', 'NormalOpt', 'NResetHess', 'NStepsInResetHess',
-    \ 'NumFreq', 'NumHess', 'Opt', 'OptElement', 'OptGuess', 'PAtom', 'PModel',
-    \ 'Powell', 'PrintInternalHess', 'ProjectTR', 'Read', 'Recalc_Hess',
-    \ 'ReducePrint', 'ReduceRedInts', 'RelaxFrags', 'RelaxHFrags', 'RigidFrags',
-    \ 'RunTyp', 'Scan', 'Schlegel', 'Shift_Diag', 'SPHEREPOT', 'Step', 'Swart',
-    \ 'TightOpt', 'TightSCF', 'TolE', 'TolMaxD', 'TolMaxG', 'TolRMSD', 'TolRMSG',
-    \ 'Trust', 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1', 'XTB2']
+    \ 'AddExtraBonds', 'AddExtraBonds_MaxDist',
+    \ 'AddExtraBonds_MaxLength', 'Almloef', 'AUTOFRAG', 'BFGS', 'BIAS',
+    \ 'Bofill', 'BOXPOT', 'Calc_Hess', 'cartfallback',
+    \ 'ConnectFragments', 'ConstrainFragments', 'Constraints',
+    \ 'Convergence', 'coordsys', 'COpt', 'ELLIPSEPOT', 'EV_Reverse',
+    \ 'Ext_Params', 'EXTOPTEXE', 'FixFrags', 'Frags', 'freezeHydrogens',
+    \ 'GFNFF', 'Hess_Internal', 'HESS_MinEV', 'HESS_Modification',
+    \ 'Hueckel', 'Hybrid_Hess', 'InHess', 'inhess', 'InHessName',
+    \ 'invertConstraints', 'Lindh', 'LooseOpt', 'MaxIter', 'MaxStep',
+    \ 'modify_internal', 'MORead', 'NormalOpt', 'NResetHess',
+    \ 'NStepsInResetHess', 'NumFreq', 'NumHess', 'Opt', 'OptElement',
+    \ 'OptGuess', 'optimizeHydrogens', 'PAtom', 'PModel', 'Powell',
+    \ 'PrintInternalHess', 'ProjectTR', 'Read', 'Recalc_Hess',
+    \ 'ReducePrint', 'ReduceRedInts', 'RelaxFrags', 'RelaxHFrags',
+    \ 'RigidFrags', 'RunTyp', 'Scan', 'Schlegel', 'Shift_Diag',
+    \ 'Simul_Scan', 'SPHEREPOT', 'Step', 'Swart', 'TightOpt',
+    \ 'TightSCF', 'TolE', 'TolMaxD', 'TolMaxG', 'TolRMSD', 'TolRMSG',
+    \ 'Trust', 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1',
+    \ 'XTB2']
 
   let g:orca_block_params['method'] = [
-    \ 'CIM', 'DFT', 'Docker', 'EDA', 'Energy', 'EnergyGrad', 'EnGrad',
-    \ 'GeometryOpt', 'Gradient', 'HF', 'MD', 'Method', 'MM', 'ModeTrajectory',
-    \ 'MTR', 'NMGrad', 'NMGradient', 'NMScan', 'NormalModeGradient', 'NormalModeScan',
-    \ 'Opt', 'PrintThermoChem', 'PropertiesOnly', 'ROHF', 'ROKS', 'RunTyp', 'Scan',
-    \ 'SP', 'Trajectory']
+    \ 'ACM', 'ACM_A', 'ACM_B', 'ACM_C',
+    \ 'CASDFT', 'CBetaPBE', 'CheckFrozenCore', 'CIM', 'ComplexTranslation',
+    \ 'CorrectFrozenCore', 'Correlation', 'COSX_IntSymmetry', 'COSX_PartialContraction',
+    \ 'D3A1', 'D3A2', 'D3alpha6', 'D3RS6', 'D3S6', 'D3S8',
+    \ 'D4A1', 'D4A2', 'D4S6', 'D4S8', 'D4S9',
+    \ 'DFT', 'DFTDOpt', 'DFTDScaleC6', 'Docker', 'DoGCP', 'DoMP2',
+    \ 'EDA', 'Energy', 'EnergyGrad', 'EnGrad',
+    \ 'Exchange', 'Functional', 'FrozenCore',
+    \ 'GCPMethod', 'GeometryOpt', 'Gradient', 'GridX',
+    \ 'HF', 'IntAccX',
+    \ 'LDAOpt', 'MD', 'Method', 'MM', 'ModeTrajectory', 'MTR',
+    \ 'NMGrad', 'NMGradient', 'NMScan', 'NormalModeGradient', 'NormalModeScan',
+    \ 'Opt', 'OrthogonalCI',
+    \ 'PrintThermoChem', 'PropertiesOnly',
+    \ 'RangeSepEXX', 'RangeSepMu', 'RangeSepScal', 'RI', 'ROHF', 'ROKS', 'RunTyp',
+    \ 'ScalDFX', 'ScalGGAC', 'ScalHFX', 'ScalLDAC', 'ScalMP2C',
+    \ 'Scan', 'SFitInvertType', 'SInvThresh', 'SP',
+    \ 'Trajectory', 'UseSFitting', 'UseQGradFit',
+    \ 'XAlpha', 'XBeta', 'XKappa', 'XMuePBE']
 
   let g:orca_block_params['freq'] = [
-    \ 'AnFreq', 'CutOffFreq', 'NumFreq', 'NumGrad', 'ProjectTR']
+    \ 'AnFreq', 'CentralDiff', 'CutOffFreq', 'Delq', 'DX',
+    \ 'Hybrid_Hess', 'Increment', 'NumFreq', 'NumGrad',
+    \ 'NumHessTransInvar', 'Partial_Hess', 'ProjectTR',
+    \ 'QRRHORefFreq', 'QuasiRRHO', 'Restart', 'ScalFreq', 'T',
+    \ 'Temp', 'TransInvar', 'XTBVPT2']
 
   let g:orca_block_params['mp2'] = [
-    \ 'Direct', 'FCut', 'IntAccX', 'LoosePNO', 'NormalPNO', 'NoIter', 'Q1Opt',
-    \ 'RI', 'TCutPNO', 'TightPNO', 'Z_GridX', 'Z_IntAccX']
+    \ 'CalcS2', 'Density', 'Direct', 'DLPNO', 'DoRegMP2', 'DoSCS',
+    \ 'EMax', 'EMin', 'EWin', 'F12', 'FCut', 'ForceDirect',
+    \ 'GridX', 'IntAccX', 'KC_GridX', 'KC_IntAccX', 'KCOpt',
+    \ 'LoosePNO', 'MaxCore', 'MaxOrbIter', 'MP2Shift', 'NatOrbs',
+    \ 'NoIter', 'NormalPNO', 'OrbOpt', 'PertCan_EThresh',
+    \ 'PertCan_UThresh', 'PrintLevel', 'Ps', 'Pt', 'Q1Opt',
+    \ 'RegMP2Kappa', 'RegMP2Sigma', 'RegMP2Type', 'RespDijConv',
+    \ 'RespStoreT', 'RI', 'TCutPNO', 'TightPNO', 'TNat',
+    \ 'UsePertCanOrbs', 'Z_GridX', 'Z_IntAccX', 'ZLoc_Solver']
 
   let g:orca_block_params['mdci'] = [
-    \ 'CCSD', 'Conv', 'Direct', 'FB', 'IAOBOYS', 'IAOIBO', 'LMP2ScaleTCutPNO',
-    \ 'LocTol', 'LoosePNO', 'MaxDIIS', 'MP3', 'NormalPNO', 'QCISD', 'TightPNO',
-    \ 'TightSCF', 'TolG']
+    \ 'AD_Loewdin', 'AD_Mulliken', 'AD_SpinResolved',
+    \ 'Brueckner', 'CCSD2', 'CheckEachRoot', 'citype', 'CoreHole', 'CoreThresh',
+    \ 'Covalent', 'CovalPOL', 'CVSEP', 'Denmat', 'DoDIDplot', 'DoEOM',
+    \ 'DoLanczos', 'DoLEDHF', 'Doleft', 'DoOlsen', 'DoRootwise', 'DoSDiagnostic',
+    \ 'DoSingularPT', 'DoTDM', 'DoAlpha', 'DoBeta', 'DoCore',
+    \ 'DOAOX3E', 'DOCOSXEOM', 'DRESS3ED', 'DRESS3ES', 'DTol',
+    \ 'ewin', 'FB', 'FOLLOWCIS', 'IAOBOYS', 'IAOIBO', 'InCore', 'KCOpt',
+    \ 'LED', 'LMP2ScaleTCutPNO', 'LShift', 'Localize', 'LocMaxIter',
+    \ 'LocMaxIterLed', 'LocTocLed', 'LocTol', 'LoosePNO',
+    \ 'MaxCore', 'MaxDIIS', 'MaxIter', 'NatOrbIters', 'NDav',
+    \ 'NInits', 'NormalPNO', 'NRoots', 'NRootsPerBatch',
+    \ 'OTol', 'pCCSDAB', 'pCCSDCD', 'pCCSDEF', 'PrintLevel', 'PrintOrbSelect',
+    \ 'RootHoming', 'Singles', 'SingularPTThresh', 'STol',
+    \ 'TCutDO', 'TCutMKN', 'TCutPairs', 'TCutPNO', 'TightPNO',
+    \ 'TrafoType', 'Triples', 'UseEOMOptD', 'UseEOMOptS',
+    \ 'UseCISUpdate', 'UseFullLMP2Guess', 'UseQROs',
+    \ 'VirtualThresh', 'ZSimple']
 
   let g:orca_block_params['casscf'] = [
-    \ 'ActConstraints', 'AutoTRAH', 'CIStep', 'DIIS', 'DoFullSemiclassical',
-    \ 'DoubleShellMO', 'DThresh', 'ETol', 'FlipSpin', 'FreezeActive', 'FreezeGrad',
-    \ 'FreezeIE', 'GradScaling', 'GTol', 'KDIIS', 'MaxIter', 'MaxM', 'MaxRot',
-    \ 'MinShift', 'NOrb', 'PrintGState', 'PrintLevel', 'RIJCOSX', 'ShiftDn', 'SOSCF',
-    \ 'SuperCI_PT', 'SwitchIter', 'SwitchStep', 'SymThresh', 'TightSCF', 'TrafoStep',
-    \ 'TRAH']
+    \ 'ActConstraints', 'ActOrbs', 'AutoTRAH', 'bweight',
+    \ 'CIPSIType', 'CIStep', 'DIIS', 'DIISThresh', 'dOrbs',
+    \ 'DoFullSemiclassical', 'DoNDO', 'DoNTO', 'DOI', 'DoubleShell', 'DoubleShellMO',
+    \ 'DThresh', 'ETol', 'ExactDiagSwitch', 'ExtOrbs',
+    \ 'FlipSpin', 'fOrbs', 'FreezeActive', 'FreezeGrad', 'FreezeIE',
+    \ 'GradScaling', 'GTol', 'ICEType', 'imult', 'IntOrbs', 'irrep', 'iroot',
+    \ 'KDIIS', 'LMORBS', 'MaxDim', 'MaxDIIS', 'MaxIter', 'MaxM', 'MaxRot',
+    \ 'MinShift', 'mult', 'NDOStates', 'nel', 'NGuessMat', 'norb', 'NRoots',
+    \ 'NTOStates', 'NTOThresh', 'orbstep', 'OSZ', 'PMOS', 'PrintGState',
+    \ 'PrintLevel', 'PrintWF', 'RefMO', 'ResetFreq', 'RIJCOSX', 'RTol',
+    \ 'SDO', 'ShiftDn', 'ShiftUp', 'SOSCF', 'SuperCI_PT', 'switchdens',
+    \ 'SwitchConv', 'SwitchIter', 'switchstep', 'SymThresh',
+    \ 'TGen', 'TightSCF', 'TPrint', 'TrafoStep', 'TRAH', 'TVar',
+    \ 'weights']
 
   let g:orca_block_params['tddft'] = [
-    \ 'CPCMEQ', 'DecomposeFosc', 'DoNTO', 'DoSoc', 'DOTRANS', 'EnStep', 'EThresh',
-    \ 'ETol', 'EWin', 'FIR', 'FOLLOWIROOT', 'IRoot', 'IROOTLIST', 'IRootMult',
-    \ 'IROOTMULT', 'MaxCore', 'MaxDim', 'MaxIter', 'Mode', 'NRoots', 'NTOStates',
-    \ 'NTOThresh', 'OrbWin', 'PThresh', 'PTLimit', 'RTol', 'TDA', 'TPrint', 'TROOTLIST']
+    \ 'B', 'CPCMEQ', 'DecomposeFosc', 'DoDipoleLength',
+    \ 'DoDipoleVelocity', 'DoFullSemiClassical', 'DoMCD', 'DoNTO',
+    \ 'DoSoc', 'DOTRANS', 'EnStep', 'EThresh', 'ETol', 'EWin', 'FIR',
+    \ 'FOLLOWIROOT', 'IRoot', 'IROOTLIST', 'IRootMult', 'LRCPCM',
+    \ 'MaxCore', 'MaxDim', 'MaxIter', 'Mode', 'NGuessMat', 'NRoots',
+    \ 'NTOStates', 'NTOThresh', 'OrbWin', 'PThresh', 'PTLimit', 'RTol',
+    \ 'SaveUnrNatOrb', 'SocGrad', 'TDA', 'TPrint', 'triplets',
+    \ 'TROOTLIST']
 
   let g:orca_block_params['cis'] = [
-    \ 'CPCMEQ', 'DecomposeFosc', 'DoNTO', 'DoSoc', 'EnStep', 'EThresh', 'ETol',
-    \ 'EWin', 'IRoot', 'IROOTLIST', 'IRootMult', 'IROOTMULT', 'MaxCore', 'MaxDim',
-    \ 'MaxIter', 'Mode', 'NRoots', 'NTOStates', 'NTOThresh', 'OrbWin', 'PThresh',
-    \ 'PTLimit', 'RTol', 'TDA', 'TPrint', 'TROOTLIST']
+    \ 'B', 'CPCMEQ', 'DecomposeFosc', 'DoMCD', 'DoNTO', 'DoSoc',
+    \ 'EnStep', 'EThresh', 'ETol', 'EWin', 'IRoot', 'IROOTLIST',
+    \ 'IRootMult', 'LRCPCM', 'MaxCore', 'MaxDim', 'MaxIter', 'Mode',
+    \ 'NGuessMat', 'NRoots', 'NTOStates', 'NTOThresh', 'OrbWin',
+    \ 'PThresh', 'PTLimit', 'RTol', 'SaveUnrNatOrb', 'SocGrad', 'TDA',
+    \ 'TPrint', 'triplets', 'TROOTLIST']
 
   let g:orca_block_params['eprnmr'] = [
-    \ 'GIAO_2el', 'LocOrbGBW', 'Mass2016', 'NMRCoal', 'NMREquiv', 'NMRSpecFreq',
-    \ 'SpinSpinAtomPairs', 'SpinSpinRThresh']
+    \ 'do_giao_soc2el', 'DSOC', 'DSS', 'dtensor', 'GIAO_2el',
+    \ 'gtensor', 'gtensor_1el2el',
+    \ 'hfcgaugecorrection_angulargrid',
+    \ 'hfcgaugecorrection_bfcutoff', 'hfcgaugecorrection_intacc',
+    \ 'hfcgaugecorrection_numeric', 'hfcgaugecorrection_prunegrid',
+    \ 'hfcgaugecorrection_wcutoff', 'hfcgaugecorrection_zeff',
+    \ 'LevelShift', 'LocOrbGBW', 'Mass2016', 'MaxDIIS', 'MaxIter',
+    \ 'NMRCoal', 'NMREquiv', 'NMRSpecFreq', 'nuclei', 'ori',
+    \ 'printEuler', 'Solver', 'SpinSpinAtomPairs',
+    \ 'SpinSpinRThresh', 'Tol']
 
   let g:orca_block_params['pal'] = ['nprocs', 'nprocs_world', 'nprocs_group']
 
   let g:orca_block_params['xtb'] = [
-    \ 'ACCURACY', 'ALPBSOLVENT', 'DOALPB', 'DOCPCMX', 'DODDCOSMO', 'DoMP2',
-    \ 'EPSILON', 'ETEMP', 'MAXCORE', 'METHOD', 'NPROCS', 'READXTBPARAM', 'SmearTemp',
-    \ 'UseXTBMixer', 'VERSION', 'XTB', 'XTB0', 'XTB1', 'XTB2', 'XTBFF', 'XTBFOD',
-    \ 'XTBINPUTSTRING', 'XTBINPUTSTRING2', 'XTBPARAMFILE', 'WRITEXTBPARAM']
+    \ 'ACCURACY', 'ALPBSOLVENT', 'CPCMXSOLVENT', 'DDCOSMOSOLVENT',
+    \ 'DOALPB', 'DOCPCMX', 'DODDCOSMO', 'DoMP2', 'EPSILON', 'ETEMP',
+    \ 'MAXCORE', 'METHOD', 'NPROCS', 'READXTBPARAM', 'SmearTemp',
+    \ 'UseXTBMixer', 'VERSION', 'WRITEXTBPARAM', 'XTB', 'XTB0', 'XTB1',
+    \ 'XTB2', 'XTBFF', 'XTBFOD', 'XTBINPUTSTRING', 'XTBINPUTSTRING2',
+    \ 'XTBPARAMFILE']
 
   let g:orca_block_params['output'] = [
     \ 'AIM', 'KeepTransDensity', 'LargePrint', 'MiniPrint', 'NoPrintMOs', 'NoPropFile',
@@ -147,13 +227,22 @@ if !exists("g:orca_block_params")
     \ 'P_UNO_ReducedOrbPopMO_L', 'P_UNO_ReducedOrbPopMO_M']
 
   let g:orca_block_params['rel'] = [
-    \ 'DKH', 'DKH1', 'DLU', 'FiniteNuc', 'IntAcc', 'IORA', 'LightAtomThresh',
-    \ 'Method', 'ModelDens', 'ModelPot', 'OneCenter', 'Order', 'PictureChange',
-    \ 'PrintLevel', 'Rel1C', 'RelDLU', 'RelFull', 'ScaleZORA', 'SpecialGridIntAcc',
-    \ 'StorageLevel', 'VELOCITY', 'X2C', 'Xalpha', 'ZORA']
+    \ 'C', 'DKH', 'DKH1', 'DLU', 'FiniteNuc', 'fpFWtrafo',
+    \ 'IntAcc', 'IORA', 'LightAtomThresh', 'Method', 'ModelDens',
+    \ 'ModelPot', 'OneCenter', 'Order', 'PictureChange',
+    \ 'PrintLevel', 'Rel1C', 'RelDLU', 'RelFull', 'ScaleZORA',
+    \ 'SOCFlags', 'SOCMaxCenter', 'SOCOff', 'SOCType',
+    \ 'SpecialGridIntAcc', 'StorageLevel', 'VELOCITY', 'X2C',
+    \ 'Xalpha', 'Zeff', 'ZORA']
 
   let g:orca_block_params['cpcm'] = [
-    \ 'Corrected', 'COUPLED', 'CPCMccm', 'Final', 'Outlying', 'SMD18']
+    \ 'AtomRadii', 'cds_cpcm', 'Corrected', 'COUPLED', 'CPCMccm',
+    \ 'cut_area', 'cut_swf', 'draco', 'draco_charges', 'dracoisodens',
+    \ 'epsilon', 'fepstype', 'Final', 'fopt',
+    \ 'ndiv', 'num_leb', 'Outlying', 'pmin', 'radius', 'refrac', 'rmin', 'rsolv',
+    \ 'scale_gauss', 'smd', 'SMD18', 'smdsolvent', 'sola', 'solb', 'solc',
+    \ 'solg', 'solh', 'soln', 'soln25', 'solvent', 'surfacetype',
+    \ 'thresh_h', 'thresh_noth', 'vopt', 'xfeps']
 
   let g:orca_block_params['md'] = [
     \ 'Accel', 'Anneal', 'Append', 'Atom', 'Cell', 'Celsius', 'CenterCOM',
@@ -167,7 +256,7 @@ if !exists("g:orca_block_params")
     \ 'RemoveAtoms', 'Replace', 'Reset', 'Restart', 'Restraint', 'Restraints',
     \ 'Rhomb', 'Rigid', 'RMSGrad', 'Run', 'Scale', 'SCFLog', 'Screendump', 'Sigma',
     \ 'Sphere', 'Spring', 'StepLimit', 'Steps', 'Store', 'Stride', 'Target',
-    \ 'TempConv', 'Temperature', 'Thermostat', 'Thermostats', 'Timecon', 'Timestep',
+    \ 'Temp', 'TempConv', 'Temperature', 'Thermostat', 'Thermostats', 'Timecon', 'Timestep',
     \ 'Upper', 'Vectors', 'Velocity', 'Wall', 'Weights', 'WellTempered', 'Yoshida']
 
   let g:orca_block_params['qmmm'] = [
@@ -196,20 +285,33 @@ if !exists("g:orca_block_params")
     \ 'VIRT', 'XAS', 'XASS', 'XASSOC', 'XES', 'XESSOC', 'ZETA_D']
 
   let g:orca_block_params['mrci'] = [
-    \ 'AllSingles', 'CIType', 'DavidsonOpt', 'DIIS', 'EUnselOpt', 'EWin', 'IntMode',
-    \ 'MaxMemVec', 'MRACPF', 'MRAQCC', 'MRCI', 'MRDDCI1', 'MRDDCI2', 'MRDDCI3',
-    \ 'NoIter', 'RefWeight', 'RITrafo', 'Second', 'SORCI', 'Tnat', 'Tpre', 'TPrint',
-    \ 'Tsel', 'UseIVOs']
+    \ 'AllSingles', 'CIType', 'DavidsonOpt', 'Densities', 'DIIS',
+    \ 'DoDDCIMP2', 'Etol', 'EUnselOpt', 'EunselOpt', 'EWin',
+    \ 'EWIN', 'Excitations', 'Flags', 'Fopt', 'FourIndexInts',
+    \ 'H0Opt', 'IntMode', 'KeepFiles', 'LevelShift',
+    \ 'LinearResponse', 'Loc', 'MaxDIIS', 'MaxDim', 'MaxIter',
+    \ 'MaxMemInt', 'MaxMemVec', 'MORanges', 'MRACPF', 'MRAQCC',
+    \ 'MRCI', 'MRDDCI1', 'MRDDCI2', 'MRDDCI3', 'MRPT_b',
+    \ 'MRPT_shift', 'NatOrbIters', 'NelCorr', 'NewBlock',
+    \ 'NGuessMat', 'NGuessMatRefCI', 'NoIter', 'NRoots', 'Otol',
+    \ 'Partitioning', 'PrintLevel', 'PrintWF', 'refs', 'RefWeight',
+    \ 'RejectInvalidRefs', 'RelaxRefs', 'RITrafo', 'Rtol',
+    \ 'Second', 'Solver', 'SORCI', 'Tnat', 'Tnat2', 'Tpre',
+    \ 'Tpre_fi', 'Tpre_in', 'TPrint', 'TPrintWF', 'Tsel',
+    \ 'Tsel_fi', 'Tsel_in', 'UseIVOs', 'UsePartialTrafo', 'XASMOs']
 
   let g:orca_block_params['rocis'] = [
-    \ 'DecomposeFosc', 'Do_HM_ia', 'Do_HM_is', 'Do_HM_sa', 'Do_ia', 'Do_is',
-    \ 'Do_isa', 'Do_ista', 'Do_LM_ia', 'Do_LM_is', 'Do_LM_sa', 'Do_LM_ss', 'Do_sa',
-    \ 'DoCD', 'DoDipoleLength', 'DoDipoleVelocity', 'DoElastic', 'DoFullSemiclassical',
-    \ 'DoGenROCIS', 'DoHigherMult', 'DoLoc', 'DoLowerMult', 'DoMCD', 'DoNDO', 'DoNTO',
-    \ 'DoPNO', 'DoRIXS', 'DoRIXSSOC', 'DoSOC', 'ETol', 'EWin', 'LocMet', 'LocOrbWin',
-    \ 'MaxCore', 'MaxDim', 'MaxIter', 'NDOStates', 'NDOThresh', 'NRoots', 'NTOStates',
-    \ 'NTOThresh', 'OrbWin', 'PlotDiffDens', 'PlotSOCDiffDens', 'PrintLevel',
-    \ 'ReferenceMult', 'RTol', 'TCutPNO', 'Temperature', 'TPrint', 'XASelems']
+    \ 'B', 'DecomposeFosc', 'Do_HM_ia', 'Do_HM_is', 'Do_HM_sa', 'Do_ia',
+    \ 'Do_is', 'Do_isa', 'Do_ista', 'Do_LM_ia', 'Do_LM_is', 'Do_LM_sa',
+    \ 'Do_LM_ss', 'Do_sa', 'DoCD', 'DoDipoleLength', 'DoDipoleVelocity',
+    \ 'DoElastic', 'DoFullSemiclassical', 'DoGenROCIS', 'DoHigherMult',
+    \ 'DoLoc', 'DoLowerMult', 'DoMCD', 'DoNDO', 'DoNTO', 'DoPNO',
+    \ 'DoRIXS', 'DoRIXSSOC', 'DoSOC', 'ETol', 'EWin', 'LocMet',
+    \ 'LocOrbWin', 'MaxCore', 'MaxDim', 'MaxIter', 'NDOStates',
+    \ 'NDOThresh', 'NGuessMat', 'NRoots', 'NTOStates', 'NTOThresh',
+    \ 'OrbWin', 'PlotDiffDens', 'PlotSOCDiffDens', 'PrintLevel',
+    \ 'ReferenceMult', 'rel', 'RTol', 'TCutPNO', 'Temperature',
+    \ 'TPrint', 'XASelems']
 
   let g:orca_block_params['casresp'] = [
     \ 'DoLocking', 'DoOlsen', 'DoOrbResp', 'MaxIter', 'MaxRed', 'NRoots',
@@ -277,7 +379,24 @@ if !exists("g:orca_block_params")
 
   let g:orca_block_params['elprop'] = ['Polar']
 
-  let g:orca_block_params['esd'] = ['IROOT', 'ORCA_ESD']
+  let g:orca_block_params['qgprop'] = [
+    \ 'COORDSTYPE', 'DERHSOC', 'HESSIAN', 'MODE', 'STEPSIZE']
+
+  let g:orca_block_params['magrelax'] = [
+    \ 'degenThresh', 'doRaman', 'gridMax', 'gridMin', 'HESSIAN',
+    \ 'inputfile', 'keepData', 'magfld', 'nGrid', 'temperature']
+
+  let g:orca_block_params['esd'] = [
+    \ 'APPROXADEN', 'B', 'CENTRALDIFF', 'CONVDER', 'COORDSYS', 'DELE', 'DELQ',
+    \ 'DELTA', 'DOHT', 'ESDFLAG', 'ESHESSIAN', 'FASTDER', 'FCWL', 'FCWS',
+    \ 'GEOMSTEP', 'GSHESSIAN', 'HESSFLAG', 'IFREQFLAG', 'INLINEW', 'IROOT',
+    \ 'ISCFSHESSIAN', 'ISCISHESSIAN', 'LASERE', 'LEBEDEVINTEGRATIONPOINTS',
+    \ 'LINEW', 'MAXTIME', 'MODELIST', 'NPOINTS', 'ORCA_ESD', 'PRINTLEVEL',
+    \ 'PRINTVIB', 'RORDER', 'RRINTENS', 'RRSLINEW', 'RRTCUTDER', 'RRTCUTJ',
+    \ 'SAMEFREQ', 'SCALING', 'SINGLEMODE', 'SOCME', 'SPECRANGE', 'SPECRES',
+    \ 'STATES', 'STDA', 'STEPCONSTR', 'STEPSCALING', 'TCUTFREQ', 'TDIP',
+    \ 'TDIPSCALING', 'TEMP', 'TMDIP', 'TSHESSIAN', 'UF_DELE', 'UFFREQERR',
+    \ 'UNIT', 'USEB', 'USEJ', 'WRITEHESS']
 
   let g:orca_block_params['frag'] = [
     \ 'AABackbone', 'AASCFineGrained', 'AASideChains', 'Aminoacids', 'Atomic',
@@ -288,7 +407,7 @@ if !exists("g:orca_block_params")
     \ 'Solvents', 'STOREFRAGS', 'TopolFile', 'Usetopology', 'Water']
 
   let g:orca_block_params['eda'] = [
-    \ 'EDA', 'FRAG1', 'FRAG1_C', 'FRAG1_FS', 'FRAG1_M', 'FRAG1_METHODFILE',
+    \ 'DoEDA', 'EDA', 'FRAG1', 'FRAG1_C', 'FRAG1_FS', 'FRAG1_M', 'FRAG1_METHODFILE',
     \ 'FRAG1_SF', 'FRAG2', 'FRAG2_C', 'FRAG2_M', 'FRAG2_METHODFILE', 'FRAG2_SF',
     \ 'MO2', 'MP2', 'Pauli', 'Rotate']
 
@@ -336,7 +455,7 @@ function! OrcaDetectBlock()
   let depth = 0
   while lnum > 0
     let l = getline(lnum)
-    if l =~? '^\s*end\>'
+    if l =~? '^end\>'
       let depth += 1
     else
       let m = matchstr(l, '^\s*%\zs\w\+')

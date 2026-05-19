@@ -1,3 +1,8 @@
 /_*/
+.DS_Store
+._*
 orca.inp
 *.orca
+.claude/
+CLAUDE.md
+data/*

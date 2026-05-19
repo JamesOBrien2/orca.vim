@@ -1,0 +1,865 @@
+# Comprehensive ORCA input example for syntax highlighting verification
+# Covers all 39 blocks and representative ! keyword line entries
+
+# ------------------------------------------------------------------------------
+# Simple keyword line
+# ------------------------------------------------------------------------------
+! B3LYP def2-TZVP def2/J RIJCOSX OPT Freq TightSCF TightOpt D3BJ CPCM(Water)
+
+* xyz 0 1
+  C   0.000   0.000   0.000
+  H   0.630   0.630   0.630
+  H  -0.630  -0.630   0.630
+  H  -0.630   0.630  -0.630
+  H   0.630  -0.630  -0.630
+*
+
+# ------------------------------------------------------------------------------
+%pal
+  nprocs 8
+  nprocs_world 8
+end
+
+# ------------------------------------------------------------------------------
+%method
+  Method        DFT
+  Functional    B3LYP
+  Exchange      B88
+  Correlation   LYP
+  FrozenCore    FC_ELECTRONS
+  RI            true
+  RunTyp        Energy
+  ScalHFX       0.20
+  ScalDFX       0.72
+  ScalGGAC      0.81
+  ScalLDAC      1.00
+  ScalMP2C      0.27
+  D3S6          1.00
+  D3A1          0.40
+  D3A2          4.36
+  D4S6          1.00
+  D4A1          0.40
+  D4A2          5.00
+  D4S8          0.00
+  D4S9          1.00
+  DoGCP         false
+  DFTDOpt       D3BJ
+  RangeSepMu    0.33
+  RangeSepEXX   0.65
+  XAlpha        0.70
+  XBeta         0.95
+  XKappa        0.46
+end
+
+# ------------------------------------------------------------------------------
+%scf
+  MaxIter       300
+  Convergence   Tight
+  HFTyp         RHF
+  Guess         PModel
+  GuessMode     FMatrix
+  GuessMix      0.10
+  SCFMode       Direct
+  ETol          1e-8
+  GTol          1e-5
+  AutoTRAH      true
+  DIIS          true
+  DIISMaxEq     15
+  DIISStart     0.20
+  SOSCF         true
+  SOSCFMaxIt    12
+  SOSCFStart    0.0033
+  TRAH          false
+  Damp          0.70
+  DampErr       0.05
+  LShift        0.25
+  ShiftErr      0.01
+  Smear         5000
+  MaxDisk       8000
+  MaxIntMem     2000
+  STABPerform   false
+  STABNRoots    1
+  STABMaxIter   50
+  STABRTol      1e-5
+  EField        0.0, 0.0, 0.01
+  FracOcc       false
+  DoMOM         false
+  ConvCheckMode 1
+  DirectResetFreq 15
+  Z_Tol         1e-14
+end
+
+# ------------------------------------------------------------------------------
+%basis
+  Basis         def2-TZVP
+  AuxJ          def2/J
+  AuxJK         def2/JK
+  AuxC          def2-TZVP/C
+  ECP           def2-ECP
+  Decontract    false
+  AutoAux       true
+  AutoAuxLmax   6
+  AutoAuxSize   medium
+  PCDThresh     1e-3
+  GTOName       "def2-TZVP"
+  GTOAuxJName   "def2/J"
+  NewGTO  6
+    S   6 1.00
+      3047.5249      0.001835
+       457.36951     0.014037
+       103.94869     0.068843
+        29.210155    0.232184
+         9.2866630   0.467941
+         3.1639270   0.362312
+    S   1 1.00
+         7.8682724  -0.119332
+    end
+  AddGTO  1
+    S   1 1.00
+         0.0360000   1.000000
+    end
+end
+
+# ------------------------------------------------------------------------------
+%geom
+  MaxIter          100
+  coordsys         redundant
+  Convergence      TightOpt
+  TolE             1e-6
+  TolRMSG          1e-4
+  TolMaxG          3e-4
+  TolRMSD          2e-3
+  TolMaxD          4e-3
+  Step             RFO
+  Trust            0.30
+  MaxStep          0.30
+  Update           BFGS
+  Calc_Hess        false
+  Recalc_Hess      5
+  NumHess          false
+  Hybrid_Hess      {1,2,3}
+  InHess           Almloef
+  InHessName       "orca.hess"
+  ProjectTR        true
+  ReducePrint      false
+  UseSOSCF         false
+  optimizeHydrogens true
+  freezeHydrogens  false
+  invertConstraints false
+  coordsys         redundant
+  modify_internal
+    {B 1 2 value 1.5}
+  end
+  Constraints
+    {B 1 2 C}
+    {A 1 2 3 C}
+  end
+  Scan
+    B 1 2 = 1.2, 2.0, 9
+  end
+  BIAS
+    B 1 2 = 1.5  K=10.0
+  end
+  AddExtraBonds true
+  AddExtraBonds_MaxDist  3.0
+  NResetHess   5
+  OptGuess     MORead
+end
+
+# ------------------------------------------------------------------------------
+%freq
+  NumFreq        false
+  AnFreq         true
+  ScalFreq       1.0
+  CentralDiff    false
+  Restart        false
+  DX             0.005
+  Increment      0.005
+  Hybrid_Hess    {1,2}
+  Partial_Hess   {1,2,3}
+  QuasiRRHO      true
+  QRRHORefFreq   100.0
+  CutOffFreq     10.0
+  Temp           298.15
+  T              298.15
+  XTBVPT2        false
+  Delq           0.005
+  TransInvar     true
+  NumHessTransInvar false
+  ProjectTR      true
+end
+
+# ------------------------------------------------------------------------------
+%mp2
+  RI             true
+  ForceDirect    false
+  Q1Opt          1
+  PrintLevel     2
+  DoSCS          false
+  Ps             1.20
+  Pt             0.333
+  Density        unrelaxed
+  NatOrbs        false
+  TNat           0.0
+  DLPNO          false
+  OrbOpt         false
+  MaxCore        4000
+  EMin          -3.0
+  EMax           1e5
+  EWin          -3.0, 1e5
+  F12            false
+  FCut           1e-4
+  GridX          4
+  IntAccX        3.67
+  KCOpt          _AOBLAS
+  KC_GridX       2
+  DoRegMP2       false
+  RegMP2Type     0
+  RegMP2Kappa    1.1
+  LoosePNO       false
+  NormalPNO      true
+  TightPNO       false
+  TCutPNO        1e-7
+end
+
+# ------------------------------------------------------------------------------
+%mdci
+  citype         CCSD(T)
+  MaxIter        200
+  MaxCore        4000
+  MaxDIIS        15
+  STol           1e-6
+  DTol           1e-8
+  TrafoType      UnrestrictedTrafo
+  Triples        true
+  Singles        true
+  NRoots         3
+  NRootsPerBatch 5
+  PrintLevel     2
+  PrintOrbSelect 0
+  TCutPNO        1e-7
+  TCutPairs      1e-4
+  TCutDO         5e-3
+  TCutMKN        1e-3
+  LoosePNO       false
+  NormalPNO      true
+  TightPNO       false
+  DoEOM          false
+  NatOrbIters    0
+  LED            false
+  Localize       false
+  LocMet         IAOIBO
+  InCore         false
+  UseQROs        false
+end
+
+# ------------------------------------------------------------------------------
+%casscf
+  nel            6
+  norb           6
+  mult           1
+  NRoots         3
+  weights        1.0, 1.0, 1.0
+  MaxIter        200
+  ETol           1e-8
+  GTol           1e-5
+  RTol           1e-6
+  DIIS           true
+  DIISThresh     1e-2
+  KDIIS          false
+  SOSCF          false
+  SuperCI_PT     true
+  TRAH           false
+  orbstep        SuperCI
+  CIStep         ACCCI
+  PrintLevel     3
+  PrintWF        0.01
+  ActOrbs        NEVPT2
+  ExtOrbs        NEVPT2
+  MaxRot         0.50
+  ShiftDn        0.02
+  ShiftUp        0.02
+  MinShift       0.02
+  ResetFreq      5
+  SwitchIter     10
+  SwitchConv     1e-3
+  FreezeActive   false
+  DoNTO          false
+  NTOThresh      1e-3
+  NTOStates      3
+  ICEType        CIPSI
+  MaxM           500
+  TGen           1e-4
+  TVar           1e-6
+  NDOStates      3
+  SymThresh      1e-6
+  iroot          1
+  imult          1
+  irrep          0
+end
+
+# ------------------------------------------------------------------------------
+%mrci
+  CIType         MRCI
+  EWin           -3.0, 100.0
+  Tsel           1e-6
+  Tpre           1e-4
+  Tnat           0.99
+  IntMode        FullTrafo
+  AllSingles     true
+  DavidsonOpt    1
+  EUnselOpt      1
+  UseIVOs        false
+  MaxMemInt      4000
+  MaxMemVec      4000
+  Solver         DIIS
+  NewBlock
+    NRoots 3
+    refs   CAS(6,6)
+    excitations  cisd
+  end
+  PrintLevel     2
+  DoDDCIMP2      false
+  NoIter         false
+  LevelShift     0.2
+end
+
+# ------------------------------------------------------------------------------
+%tddft
+  NRoots         10
+  IRoot          1
+  IRootMult      1
+  MaxDim         50
+  MaxIter        300
+  NGuessMat      5
+  MaxCore        4000
+  ETol           1e-6
+  RTol           1e-6
+  TDA            false
+  LRCPCM         false
+  CPCMEQ         false
+  DoNTO          false
+  NTOStates      5
+  NTOThresh      1e-3
+  SaveUnrNatOrb  false
+  DoSoc          false
+  SocGrad        false
+  DOTRANS        false
+  DoDipoleLength     true
+  DoDipoleVelocity   false
+  DoMCD          false
+  DoFullSemiClassical false
+  B              0.0
+  triplets       false
+  TPrint         1e-3
+  Mode           Direct
+  OrbWin         -1, -1, -1, -1
+  EWin           0.0, 10.0
+  EThresh        1e-3
+  EnStep         0.01
+  PThresh        1e-4
+  PTLimit        100
+  DecomposeFosc  false
+  FIR            false
+  FOLLOWIROOT    1
+  IROOTLIST      1, 2, 3
+  TROOTLIST      1, 2
+end
+
+# ------------------------------------------------------------------------------
+%cis
+  NRoots         5
+  MaxDim         30
+  ETol           1e-6
+  RTol           1e-6
+  TDA            true
+  DoNTO          false
+  DoMCD          false
+  B              0.0
+  IRoot          1
+  IRootMult      1
+  LRCPCM         false
+  CPCMEQ         false
+  SaveUnrNatOrb  false
+  DoSoc          false
+  SocGrad        false
+  MaxCore        2000
+  NGuessMat      5
+  MaxIter        100
+  TPrint         1e-3
+end
+
+# ------------------------------------------------------------------------------
+%rocis
+  NRoots         10
+  MaxDim         50
+  ETol           1e-6
+  RTol           1e-6
+  MaxIter        200
+  MaxCore        4000
+  NGuessMat      5
+  DoGenROCIS     true
+  DoSOC          false
+  DoNTO          false
+  NTOStates      5
+  NTOThresh      1e-3
+  DoNDO          false
+  NDOStates      3
+  NDOThresh      1e-3
+  DoPNO          false
+  TCutPNO        1e-7
+  DoLoc          false
+  LocMet         IAOIBO
+  LocOrbWin      -1, -1
+  OrbWin         -1, -1, -1, -1
+  EWin           0.0, 1000.0
+  XASelems       {6, 7, 8}
+  ReferenceMult  1
+  DoHigherMult   false
+  DoLowerMult    false
+  DoMCD          false
+  DoCD           false
+  DoRIXS         false
+  DoRIXSSOC      false
+  DoElastic      false
+  DoDipoleLength     true
+  DoDipoleVelocity   false
+  DoFullSemiclassical false
+  B              0.0
+  rel            false
+  Temperature    300.0
+  PlotDiffDens   false
+  PlotSOCDiffDens false
+  PrintLevel     2
+  TPrint         1e-3
+  DecomposeFosc  false
+  Do_ia          true
+  Do_is          false
+  Do_sa          false
+  Do_isa         false
+  Do_ista        false
+  Do_LM_ia       false
+  Do_LM_is       false
+  Do_LM_sa       false
+  Do_LM_ss       false
+  Do_HM_ia       false
+  Do_HM_is       false
+  Do_HM_sa       false
+end
+
+# ------------------------------------------------------------------------------
+%eprnmr
+  gtensor        true
+  gtensor_1el2el true
+  ori            -3
+  do_giao_soc2el false
+  dtensor        ssandso
+  DSS            true
+  DSOC           true
+  printEuler     false
+  Tol            1e-10
+  Solver         DIIS
+  LevelShift     0.1
+  MaxIter        64
+  MaxDIIS        15
+  nuclei         = all {ist; aiso; adip; aorb}
+  SpinSpinAtomPairs  = {1,2}
+  SpinSpinRThresh    8.0
+  GIAO_2el       true
+  LocOrbGBW      "loc.gbw"
+  Mass2016       true
+  NMRCoal        true
+  NMREquiv       true
+  NMRSpecFreq    400.0
+  hfcgaugecorrection_numeric     false
+  hfcgaugecorrection_intacc      5.0
+  hfcgaugecorrection_angulargrid 5
+  hfcgaugecorrection_prunegrid   4
+  hfcgaugecorrection_bfcutoff    1e-7
+  hfcgaugecorrection_wcutoff     1e-7
+  hfcgaugecorrection_zeff        true
+end
+
+# ------------------------------------------------------------------------------
+%rel
+  Method         ZORA
+  ModelPot       1
+  ModelDens      true
+  OneCenter      false
+  C              137.036
+  PictureChange  true
+  FiniteNuc      false
+  PrintLevel     1
+  Order          1
+  fpFWtrafo      false
+  Xalpha         0.70
+  ScaleZORA      1.0
+  DLU            false
+  LightAtomThresh 1.0
+  StorageLevel   1
+  SOCType        1
+  SOCFlags       0
+  SOCMaxCenter   4
+  SOCOff         false
+  Zeff           0
+  DKH            false
+  DKH1           false
+  IORA           false
+  X2C            false
+  ZORA           true
+  Rel1C          false
+  RelFull        false
+  RelDLU         false
+  VELOCITY       false
+  IntAcc         5.0
+  SpecialGridIntAcc 9.0
+end
+
+# ------------------------------------------------------------------------------
+%cpcm
+  solvent        Water
+  epsilon        80.4
+  refrac         1.33
+  surfacetype    vdw_gaussian
+  ndiv           5
+  num_leb        302
+  rsolv          1.30
+  rmin           0.50
+  pmin           0.20
+  Outlying       true
+  Corrected      true
+  fopt           1.0
+  vopt           0.0
+  fepstype       1
+  xfeps          0.0
+  thresh_h       1e-4
+  thresh_noth    1e-4
+  cds_cpcm       false
+  smd            false
+  smdsolvent     "Water"
+  SMD18          false
+  radius         2.0
+  AtomRadii
+    {1, 1.20}
+    {6, 1.70}
+  end
+  cut_area       0.1
+  cut_swf        0.5
+  scale_gauss    1.0
+  draco          false
+  draco_charges  Hirshfeld
+  dracoisodens   0.001
+  sola           0.0
+  solb           0.0
+  solc           0.0
+  solg           0.0
+  solh           0.0
+  soln           1.33
+  soln25         1.33
+  COUPLED        false
+  CPCMccm        false
+  Final          true
+end
+
+# ------------------------------------------------------------------------------
+%output
+  PrintLevel     Normal
+  Print          [ P_MOs           5 ]
+  Print          [ P_Mulliken       1 ]
+  Print          [ P_Loewdin        1 ]
+  Print          [ P_Mayer          1 ]
+  Print          [ P_NatPop         1 ]
+  Print          [ P_Hirshfeld      1 ]
+  Print          [ P_MBIS           1 ]
+  Print          [ P_OrbEn          1 ]
+  Print          [ P_Basis          1 ]
+  Print          [ P_SCFInfo        1 ]
+  Print          [ P_SCFIterInfo    1 ]
+  Print          [ P_Density        0 ]
+  Print          [ P_SpinDensity    0 ]
+  Print          [ P_Fockian        0 ]
+  Print          [ P_Overlap        0 ]
+  Print          [ P_KinEn          0 ]
+  Print          [ P_OneElec        0 ]
+  Print          [ P_Iter_P         0 ]
+  Print          [ P_Iter_F         0 ]
+  Print          [ P_Iter_C         0 ]
+  Print          [ P_Internal       0 ]
+  Print          [ P_GuessOrb       0 ]
+  Print          [ P_AtomBasis      0 ]
+  Print          [ P_Cartesian      0 ]
+  Print          [ P_DFTD           0 ]
+  Print          [ P_Symmetry       0 ]
+  PrintMOs       true
+  NoPrintMOs     false
+  PrintBasis     false
+  PrintGap       false
+  ReducedPop     false
+  NoReducedPop   false
+  UNO            false
+  AIM            false
+  XYZFILE        true
+  PDBFILE        false
+  NoPropFile     false
+  KeepTransDensity false
+  SmallPrint     false
+  MiniPrint      false
+  NormalPrint    true
+  LargePrint     false
+end
+
+# ------------------------------------------------------------------------------
+%xtb
+  XTB            XTB2
+  VERSION        2
+  NPROCS         4
+  MAXCORE        2000
+  ACCURACY       1.0
+  ETEMP          300.0
+  DOALPB         false
+  ALPBSOLVENT    "water"
+  DODDCOSMO      false
+  DDCOSMOSOLVENT "water"
+  DOCPCMX        false
+  CPCMXSOLVENT   "water"
+  EPSILON        80.4
+  XTBINPUTSTRING "$opt"
+  XTBINPUTSTRING2 "$end"
+  XTBPARAMFILE   "xtbparam.dat"
+  READXTBPARAM   false
+  WRITEXTBPARAM  false
+  SmearTemp      300.0
+  UseXTBMixer    false
+  METHOD         GFN2
+  DoMP2          false
+  XTB0           false
+  XTB1           false
+  XTB2           true
+  XTBFF          false
+  XTBFOD         false
+end
+
+# ------------------------------------------------------------------------------
+%autoci
+  CIType         CISD
+  NEl            6
+  NOrb           6
+  Mult           1
+  NRoots         3
+  Irrep          0
+  STol           1e-6
+  LevelShift     0.2
+  MaxIter        200
+  MaxDiis        15
+  DIISStartIter  3
+  ExcludeHigherExcDIIS false
+  PrintLevel     2
+  TrafoType      UnrestrictedTrafo
+  KeepInts       false
+  UseOldInts     false
+  RunROHFasUHF   false
+  Density        unrelaxed
+  Density2       false
+  NatOrbs        false
+  NThresh        0.99
+  D3TPre         1e-4
+  D4TPre         1e-4
+end
+
+# ------------------------------------------------------------------------------
+%loc
+  LocMet         IAOIBO
+  OrbWin         -1, -1
+  FB             false
+  NEWBOYS        false
+  IAOIBO         true
+  IAOBasis       MINAO
+  VIRT           false
+  CD             false
+  DOTRANS        false
+  SOC            false
+  LIVVO          false
+end
+
+# ------------------------------------------------------------------------------
+%plots
+  MO             5
+  Cube           10
+  UNO            false
+  UCO            false
+end
+
+# ------------------------------------------------------------------------------
+%rr
+  States         5
+  EnStep         0.01
+  NRRPPoints     1000
+  RRPRange       400.0, 700.0
+  TK             300.0
+  RamanOrder     1
+end
+
+# ------------------------------------------------------------------------------
+%esd
+  IROOT          1
+  NPOINTS        200
+  SPECRANGE      400.0, 700.0
+  SPECRES        1.0
+  PRINTLEVEL     2
+end
+
+# ------------------------------------------------------------------------------
+%chelpg
+  Grid           0.3
+  RMAX           3.0
+  Mulliken       false
+  Loewdin        false
+  Mayer          false
+  MBIS           false
+  NBO            false
+  NPA            false
+end
+
+# ------------------------------------------------------------------------------
+%nbo
+  MO             true
+  NCS            false
+end
+
+# ------------------------------------------------------------------------------
+%elprop
+  Polar          1
+end
+
+# ------------------------------------------------------------------------------
+%symmetry
+  UseSym        true
+  PointGroup    C2v
+  SymThresh     1e-4
+  CleanUpCoords true
+  CleanUpGeom   true
+  CleanUpGrad   true
+  SymRelaxSCF   false
+  SymRelaxOpt   false
+  PreferC2v     false
+  Print         1
+  PrtSALC       false
+end
+
+# ------------------------------------------------------------------------------
+%qgprop
+  MODE           0
+  COORDSTYPE     0
+  STEPSIZE       0.005
+  HESSIAN        "orca.hess"
+  DERHSOC        false
+end
+
+# ------------------------------------------------------------------------------
+%magrelax
+  magfld         0.0, 0.0, 1.0
+  inputfile      "orca.out"
+  HESSIAN        "orca.hess"
+  temperature    4.2
+  degenThresh    1e-3
+  doRaman        false
+  gridMax        20.0
+  gridMin        -20.0
+  nGrid          100
+  keepData       false
+end
+
+# ------------------------------------------------------------------------------
+%casresp
+  NRoots         3
+  MaxIter        100
+  TolR           1e-6
+  MaxRed         50
+  PreCondType    1
+  PreCondMaxRed  20
+  DoOlsen        false
+  DoOrbResp      true
+  DoLocking      false
+end
+
+# ------------------------------------------------------------------------------
+%mcrpa
+  NRoots         3
+  TolR           1e-6
+  Precond        true
+  PreConMaxRed   20
+  DoOrbResp      true
+  DoNTO          false
+  NTOThresh      1e-3
+  Conventional   false
+end
+
+# ------------------------------------------------------------------------------
+%mm
+  ORCAFFFilename  "mol.ff"
+  CoulombCutOff   10.0
+  LJCutOffInner   8.0
+  LJCutOffOuter  10.0
+  DielecConst     1.0
+  PrintLevel      2
+end
+
+# ------------------------------------------------------------------------------
+%qmmm
+  QMAtoms        {1,2,3,4,5}
+  Embedding      Electrostatic
+  ORCAFFFilename "mol.ff"
+  PrintPDB       false
+end
+
+# ------------------------------------------------------------------------------
+%solvator
+  NSOLV          50
+  SOLVENTFILE    "water.xyz"
+  DROPLET        false
+  RADIUS         15.0
+  PRINTLEVEL     2
+end
+
+# ------------------------------------------------------------------------------
+%goat
+  NWorkers       4
+  MAXITER        1000
+  MAXEN          10.0
+  RMSD           0.125
+  RANDOMSEED     42
+  SLOPPYOPT      false
+  SKIPINITIALOPT false
+end
+
+# ------------------------------------------------------------------------------
+%docker
+  HOST           {1}
+  GUEST          {2}
+  NORMALDOCK     true
+  NOPT           50
+  POPSIZE        20
+  PRINTLEVEL     2
+end
+
+# ------------------------------------------------------------------------------
+%md
+  Timestep       0.5
+  Run            1000
+  Temp           300.0
+  Thermostat     Berendsen 300.0 10.0
+  Dump           "md.trj"  stride 10
+  PrintLevel     2
+end
+
+# ------------------------------------------------------------------------------
+%frag
+  Atomic         true
+  Connectivity   automatic
+  DoInterFragBonds false
+end
+
+# ------------------------------------------------------------------------------
+%eda
+  DoEDA          true
+end

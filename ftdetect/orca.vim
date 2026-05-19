@@ -1,3 +1,2 @@
-au BufRead,BufNewFile *.orca set filetype=orca
-au BufRead,BufNewFile orca.inp set filetype=orca
+au BufRead,BufNewFile *.inp set filetype=orca
 
