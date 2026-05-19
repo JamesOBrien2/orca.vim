@@ -89,7 +89,8 @@ if !exists("g:orca_block_params")
     \ 'RigidFrags', 'RunTyp', 'Scan', 'Schlegel', 'Shift_Diag',
     \ 'Simul_Scan', 'SPHEREPOT', 'Step', 'Swart', 'TightOpt',
     \ 'TightSCF', 'TolE', 'TolMaxD', 'TolMaxG', 'TolRMSD', 'TolRMSG',
-    \ 'Trust', 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1',
+    \ 'Trust', 'TS_Active_Atoms', 'TS_Active_Atoms_Factor', 'TS_Mode',
+    \ 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1',
     \ 'XTB2']
 
   let g:orca_block_params['method'] = [
