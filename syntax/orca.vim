@@ -615,7 +615,7 @@ syn match orcaKeyword contained "\<SOMF(4X)\>"
 syn match orcaKeyword contained "\<RI-SOMF(4X)\>"
 syn match orcaKeyword contained "\<SOMF(4XS)\>"
 syn match orcaKeyword contained "\<RI-SOMF(4XS)\>"
-syn keyword orcaKeyword contained G-TENSOR COSMO DDCOSMO CPCMC NOCOSMO COSMO-RS
+syn keyword orcaKeyword contained G-TENSOR COSMO DDCOSMO CPCMC NOCOSMO COSMO-RS ALPB
 syn match orcaKeyword contained "\<COSMO(WATER)\>"
 syn match orcaKeyword contained "\<COSMO(DMSO)\>"
 syn match orcaKeyword contained "\<COSMO(DMF)\>"
@@ -681,6 +681,8 @@ syn match orcaKeyword contained "\<CPCMC(CCL4)\>"
 syn match orcaKeyword contained "\<CPCMC(CYCLOHEXANE)\>"
 syn match orcaKeyword contained "\<CPCMC(HEXANE)\>"
 syn keyword orcaKeyword contained ECRISM
+" Generic solvent model form, e.g. ALPB(Water).
+syn match orcaKeyword contained "\<ALPB([^)]*)"
 syn match orcaKeyword contained "\<ALPB(ACETONE)\>"
 syn match orcaKeyword contained "\<ALPB(ACETONITRILE)\>"
 syn match orcaKeyword contained "\<ALPB(ANILINE)\>"
@@ -1544,7 +1546,7 @@ syn match orcaBlock "%moinp\>" contains=startBlock
 " do not close the outer block region.
 " To add a new block: add its name to the alternation below AND to orcaBlock above.
 syn region methodBlock
-         \ start="%\(method\|basis\|scf\|mp2\|cis\|tddft\|mrci\|geom\|freq\|vpt2\|esd\|dftmrci\)"
+         \ start="%\(method\|basis\|scf\|mp2\|cis\|tddft\|mrci\|geom\|freq\|vpt2\|esd\|dftmrci\|moinp\)"
          \ start="%\(coords\|output\|ci\|plots\|parameters\|ndoparas\|rel\|dkh\|pal\|cosmo\|rr\)"
          \ start="%\(eprnmr\|loc\|elprop\|casscf\|mcrpa\|mdci\|dlpnocc\|mm\|mtr\|xes\|chelpg\)"
          \ start="%\(numgrad\|mecp\|ecp\|rocis\|mrcc\|cipsi\|ice\|iceci\|md\|nbo\|lft\|autoci\)"
@@ -1677,7 +1679,7 @@ syn keyword orcaMethodAlias contained MNDO AM1 PM3 MNDO_D MP2 GAMESS
 
 " orcaBlock is defined after orcaMethodAlias so it wins the priority tie
 " for words that appear in both (e.g. GEOM, SCAN, METHOD).
-syn keyword orcaBlock contained method basis scf mp2 cis tddft mrci geom
+syn keyword orcaBlock contained method basis scf mp2 cis tddft mrci geom moinp
 syn keyword orcaBlock contained freq vpt2 esd dftmrci coords output ci plots
 syn keyword orcaBlock contained parameters ndoparas rel dkh pal cosmo rr eprnmr
 syn keyword orcaBlock contained loc elprop casscf mcrpa mdci dlpnocc mm mtr
@@ -1738,13 +1740,17 @@ syn keyword orcaBlockParam contained LooseOpt MaxStep modify_internal MORead Nor
 syn keyword orcaBlockParam contained Opt OptElement OptGuess optimizeHydrogens PAtom PModel Powell PrintInternalHess ProjectTR
 syn keyword orcaBlockParam contained Read Recalc_Hess ReducePrint ReduceRedInts RelaxFrags RelaxHFrags RigidFrags RunTyp
 syn keyword orcaBlockParam contained Scan Schlegel Shift_Diag Simul_Scan SPHEREPOT Step Swart TightOpt TightSCF
-syn keyword orcaBlockParam contained TolMaxD TolMaxG TolRMSD TolRMSG Trust Update UseSOSCF VeryTightOpt
+syn keyword orcaBlockParam contained TolMaxD TolMaxG TolRMSD TolRMSG Trust TS_Active_Atoms TS_Active_Atoms_Factor TS_Mode Update UseSOSCF VeryTightOpt
 syn keyword orcaBlockParam contained XTB0 XTB1 XTB2 CIM DFT Docker EDA Energy
 syn keyword orcaBlockParam contained EnergyGrad EnGrad GeometryOpt Gradient HF MD Method MM
 syn keyword orcaBlockParam contained ModeTrajectory MTR NMGrad NMGradient NMScan NormalModeGradient NormalModeScan PrintThermoChem
 syn keyword orcaBlockParam contained PropertiesOnly ROHF SP Trajectory AnFreq CentralDiff CutOffFreq Delq DX Hybrid_Hess
 syn keyword orcaBlockParam contained Increment NumFreq NumGrad NumHessTransInvar Partial_Hess ProjectTR QRRHORefFreq QuasiRRHO Restart
 syn keyword orcaBlockParam contained ScalFreq T Temp TransInvar XTBVPT2 Direct
+syn keyword orcaBlockParam contained FullScan OneElec POTENTIALS ProgExt TS_search
+syn keyword orcaBlockParam contained Adapt_Scale_Displ DE_Init_Displ Direction Do_SD_Corr Follow_CoordType Hess_Filename hessMode
+syn keyword orcaBlockParam contained Init_Displ_DE InitHess Interpolate_only Monitor_Internals Scale_Displ_SD Scale_Displ_SD_Corr
+syn keyword orcaBlockParam contained Scale_Init_Displ SD_Corr_ParabolicFit SD_ParabolicFit
 syn keyword orcaBlockParam contained CalcS2 Density Direct DLPNO DoRegMP2 DoSCS EMax EMin EWin F12
 syn keyword orcaBlockParam contained FCut ForceDirect GridX IntAccX KC_GridX KC_IntAccX KCOpt LoosePNO MaxCore MaxOrbIter
 syn keyword orcaBlockParam contained MP2Shift NatOrbs NoIter NormalPNO OrbOpt PertCan_EThresh PertCan_UThresh PrintLevel Ps Pt
