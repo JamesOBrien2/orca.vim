@@ -71,19 +71,20 @@ if !exists("g:orca_block_params")
     \ 'Bofill', 'BOXPOT', 'Calc_Hess', 'cartfallback',
     \ 'ConnectFragments', 'ConstrainFragments', 'Constraints',
     \ 'Convergence', 'coordsys', 'COpt', 'ELLIPSEPOT', 'EV_Reverse',
-    \ 'Ext_Params', 'EXTOPTEXE', 'FixFrags', 'Frags', 'freezeHydrogens',
+    \ 'FixFrags', 'Frags', 'freezeHydrogens', 'FullScan',
     \ 'GFNFF', 'Hess_Internal', 'HESS_MinEV', 'HESS_Modification',
     \ 'Hueckel', 'Hybrid_Hess', 'InHess', 'inhess', 'InHessName',
     \ 'invertConstraints', 'Lindh', 'LooseOpt', 'MaxIter', 'MaxStep',
     \ 'modify_internal', 'MORead', 'NormalOpt', 'NResetHess',
-    \ 'NStepsInResetHess', 'NumFreq', 'NumHess', 'Opt', 'OptElement',
-    \ 'OptGuess', 'optimizeHydrogens', 'PAtom', 'PModel', 'Powell',
-    \ 'PrintInternalHess', 'ProjectTR', 'Read', 'Recalc_Hess',
+    \ 'NStepsInResetHess', 'NumHess', 'OneElec', 'Opt', 'OptElement',
+    \ 'OptGuess', 'optimizeHydrogens', 'PAtom', 'PModel', 'POTENTIALS',
+    \ 'Powell', 'PrintInternalHess', 'ProjectTR', 'Read', 'Recalc_Hess',
     \ 'ReducePrint', 'ReduceRedInts', 'RelaxFrags', 'RelaxHFrags',
     \ 'RigidFrags', 'RunTyp', 'Scan', 'Schlegel', 'Shift_Diag',
     \ 'Simul_Scan', 'SPHEREPOT', 'Step', 'Swart', 'TightOpt',
-    \ 'TightSCF', 'TolE', 'TolMaxD', 'TolMaxG', 'TolRMSD', 'TolRMSG',
-    \ 'Trust', 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1',
+    \ 'TolE', 'TolMaxD', 'TolMaxG', 'TolRMSD', 'TolRMSG',
+    \ 'Trust', 'TS_Active_Atoms', 'TS_Active_Atoms_Factor', 'TS_Mode',
+    \ 'TS_search', 'Update', 'UseSOSCF', 'VeryTightOpt', 'XTB0', 'XTB1',
     \ 'XTB2']
 
   let g:orca_block_params['method'] = [
@@ -93,14 +94,14 @@ if !exists("g:orca_block_params")
     \ 'D3A1', 'D3A2', 'D3alpha6', 'D3RS6', 'D3S6', 'D3S8',
     \ 'D4A1', 'D4A2', 'D4S6', 'D4S8', 'D4S9',
     \ 'DFT', 'DFTDOpt', 'DFTDScaleC6', 'Docker', 'DoGCP', 'DoMP2',
-    \ 'EDA', 'Energy', 'EnergyGrad', 'EnGrad',
+    \ 'EDA', 'Energy', 'EnergyGrad', 'EnGrad', 'Ext_Params',
     \ 'Exchange', 'Functional', 'FrozenCore',
     \ 'GCPMethod', 'GeometryOpt', 'Gradient', 'GridX',
     \ 'HF', 'IntAccX',
     \ 'LDAOpt', 'MD', 'Method', 'MM', 'ModeTrajectory', 'MTR',
     \ 'NMGrad', 'NMGradient', 'NMScan', 'NormalModeGradient', 'NormalModeScan',
     \ 'Opt', 'OrthogonalCI',
-    \ 'PrintThermoChem', 'PropertiesOnly',
+    \ 'PrintThermoChem', 'ProgExt', 'PropertiesOnly',
     \ 'RangeSepEXX', 'RangeSepMu', 'RangeSepScal', 'RI', 'ROHF', 'ROKS', 'RunTyp',
     \ 'ScalDFX', 'ScalGGAC', 'ScalHFX', 'ScalLDAC', 'ScalMP2C',
     \ 'Scan', 'SFitInvertType', 'SInvThresh', 'SP',
@@ -404,6 +405,13 @@ if !exists("g:orca_block_params")
     \ 'DoEDA', 'EDA', 'FRAG1', 'FRAG1_C', 'FRAG1_FS', 'FRAG1_M', 'FRAG1_METHODFILE',
     \ 'FRAG1_SF', 'FRAG2', 'FRAG2_C', 'FRAG2_M', 'FRAG2_METHODFILE', 'FRAG2_SF',
     \ 'MO2', 'MP2', 'Pauli', 'Rotate']
+
+  let g:orca_block_params['irc'] = [
+    \ 'Adapt_Scale_Displ', 'DE_Init_Displ', 'Direction', 'Do_SD_Corr',
+    \ 'Follow_CoordType', 'Hess_Filename', 'hessMode', 'Init_Displ_DE',
+    \ 'InitHess', 'Interpolate_only', 'MaxIter', 'Monitor_Internals',
+    \ 'PrintLevel', 'Scale_Displ_SD', 'Scale_Displ_SD_Corr', 'Scale_Init_Displ',
+    \ 'SD_Corr_ParabolicFit', 'SD_ParabolicFit', 'TolMaxG', 'TolRMSG']
 
 endif
 
