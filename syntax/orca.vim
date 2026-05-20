@@ -1747,6 +1747,10 @@ syn keyword orcaBlockParam contained ModeTrajectory MTR NMGrad NMGradient NMScan
 syn keyword orcaBlockParam contained PropertiesOnly ROHF SP Trajectory AnFreq CentralDiff CutOffFreq Delq DX Hybrid_Hess
 syn keyword orcaBlockParam contained Increment NumFreq NumGrad NumHessTransInvar Partial_Hess ProjectTR QRRHORefFreq QuasiRRHO Restart
 syn keyword orcaBlockParam contained ScalFreq T Temp TransInvar XTBVPT2 Direct
+syn keyword orcaBlockParam contained FullScan OneElec POTENTIALS ProgExt TS_search
+syn keyword orcaBlockParam contained Adapt_Scale_Displ DE_Init_Displ Direction Do_SD_Corr Follow_CoordType Hess_Filename hessMode
+syn keyword orcaBlockParam contained Init_Displ_DE InitHess Interpolate_only Monitor_Internals Scale_Displ_SD Scale_Displ_SD_Corr
+syn keyword orcaBlockParam contained Scale_Init_Displ SD_Corr_ParabolicFit SD_ParabolicFit
 syn keyword orcaBlockParam contained CalcS2 Density Direct DLPNO DoRegMP2 DoSCS EMax EMin EWin F12
 syn keyword orcaBlockParam contained FCut ForceDirect GridX IntAccX KC_GridX KC_IntAccX KCOpt LoosePNO MaxCore MaxOrbIter
 syn keyword orcaBlockParam contained MP2Shift NatOrbs NoIter NormalPNO OrbOpt PertCan_EThresh PertCan_UThresh PrintLevel Ps Pt
