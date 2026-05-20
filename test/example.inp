@@ -4,7 +4,7 @@
 # ------------------------------------------------------------------------------
 # Simple keyword line
 # ------------------------------------------------------------------------------
-! B3LYP def2-TZVP def2/J RIJCOSX OPT Freq TightSCF TightOpt D3BJ CPCM(Water)
+! B3LYP def2-TZVP def2/J RIJCOSX OPT Freq TightSCF TightOpt D3BJ CPCM(Water) SMD(Acetonitrile) ALPB(THF) DDCOSMO(Water) CPCMX(Water)
 
 * xyz 0 1
   C   0.000   0.000   0.000
