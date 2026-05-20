@@ -9,6 +9,7 @@ Vim plugin for [ORCA quantum chemistry](https://orcaforum.kofo.mpg.de/app.php/po
 ### Syntax highlighting
 
 - **`!` keyword line** — methods, functionals, basis sets, convergence keywords
+- **Model-specific solvent forms** — `CPCM(...)`, `SMD(...)`, `ALPB(...)`, `DDCOSMO(...)`, `CPCMX(...)`
 - **`%block ... end`** — block headers, parameter names, values, strings, numbers
 - **`* xyzfile`** — geometry coordinate block
 - **Comments** (`#`) — highlighted in dim colour, suppressed from completion
@@ -84,6 +85,9 @@ autocmd FileType orca highlight orcaComment ctermfg=8 guifg=#6c7086
 ```
 
 Key highlight groups: `orcaComment`, `orcaBlock`, `orcaBlockParam`, `orcaKeyword`, `orcaBasis`.
+
+Solvent keyword availability is embedded in `syntax/orca.vim`, derived from the ORCA 6.1 manual
+Tables 2.56 and 3.24. Completion reads those syntax rules so the plugin works without external data files.
 
 ---
 

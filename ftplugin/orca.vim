@@ -415,6 +415,53 @@ if !exists("g:orca_block_params")
 
 endif
 
+" ─── Solvent lists ───────────────────────────────────────────────────────────
+" Parsed once from syntax/orca.vim. Extracts model-specific solvent names from
+" syn match patterns of the form \<MODEL[(]solvent[)].
+function! s:LoadSolvents()
+  if exists('g:orca_solvents') | return | endif
+  let g:orca_solvents = {
+        \ 'cpcm': [],
+        \ 'smd': [],
+        \ 'cosmo_rs': [],
+        \ 'alpb': [],
+        \ 'ddcosmo': [],
+        \ 'cpcmx': [],
+        \ }
+  let model_names = {
+        \ 'CPCM': 'cpcm',
+        \ 'CPCMC': 'cpcm',
+        \ 'SMD': 'smd',
+        \ 'COSMO': 'cosmo_rs',
+        \ 'ALPB': 'alpb',
+        \ 'DDCOSMO': 'ddcosmo',
+        \ 'CPCMX': 'cpcmx',
+        \ }
+  let syn_file = s:plugin_root . '/syntax/orca.vim'
+  if !filereadable(syn_file) | return | endif
+  for l in readfile(syn_file)
+    let m = matchlist(l, '"\\<\([A-Z]\+\)\[(\]\(.\{-}\)\[)\]"')
+    if !empty(m) && has_key(model_names, m[1]) && !empty(m[2])
+      call add(g:orca_solvents[model_names[m[1]]], m[2])
+    endif
+  endfor
+  for model in keys(g:orca_solvents)
+    let g:orca_solvents[model] = uniq(sort(g:orca_solvents[model]))
+  endfor
+endfunction
+
+" Returns the solvent model name for a keyword, or '' if not a solvent keyword.
+function! s:SolventModel(keyword)
+  let kw = toupper(a:keyword)
+  if kw ==# 'CPCM' || kw ==# 'CPCMC' || kw ==# 'SOLVENT' | return 'cpcm' | endif
+  if kw ==# 'SMD' || kw ==# 'SMDSOLVENT' | return 'smd' | endif
+  if kw ==# 'COSMO' | return 'cosmo_rs' | endif
+  if kw ==# 'ALPB' || kw ==# 'ALPBSOLVENT' | return 'alpb' | endif
+  if kw ==# 'DDCOSMO' || kw ==# 'DDCOSMOSOLVENT' | return 'ddcosmo' | endif
+  if kw ==# 'CPCMX' || kw ==# 'CPCMXSOLVENT' | return 'cpcmx' | endif
+  return ''
+endfunction
+
 " ─── Simple keyword list (! line) ────────────────────────────────────────────
 " Parsed once per session from syntax/orca.vim. Only `syn keyword` lines are
 " extracted; `syn match` entries that use regex are intentionally skipped.
@@ -533,9 +580,10 @@ endfunction
 
 " ─── Auto-trigger ─────────────────────────────────────────────────────────────
 
-" s:completing_block is set during findstart so OrcaComplete's second call
-" knows to return block names without re-inspecting the line.
+" s:completing_block / s:completing_solvent are set during findstart so
+" OrcaComplete's second call knows what to return without re-inspecting the line.
 let s:completing_block = 0
+let s:completing_solvent = ''
 
 function! s:AutoTrigger()
   if pumvisible() | return | endif
@@ -565,6 +613,21 @@ function! s:AutoTrigger()
     endwhile
     let base = strpart(line, start, col - start)
     if base ==# '!' | return | endif
+    " Solvent keyword context: ALPB(partial, SMD(partial
+    let paren = stridx(base, '(')
+    if paren >= 0
+      let model = s:SolventModel(strpart(base, 0, paren))
+      if !empty(model)
+        call s:LoadSolvents()
+        let solvent_base = strpart(base, paren + 1)
+        let solvents = map(s:FilterList(g:orca_solvents[model], solvent_base),
+                         \ {_, s -> {'word': s, 'user_data': 'solvent'}})
+        if !empty(solvents)
+          call complete(start + paren + 2, solvents)
+        endif
+        return
+      endif
+    endif
     let matches = s:Candidates(base)
     if !empty(matches)
       call complete(start + 1, matches)
@@ -615,6 +678,23 @@ function! s:AutoTrigger()
     " which calls s:Candidates → s:IsMOInpLine path for prefix filtering
   endif
 
+  " Block solvent-value context triggered by space: 'smdsolvent |'
+  if ch ==# ' '
+    let m = matchlist(strpart(line, 0, col - 1), '^\s*\(\w\+\)\s*$\c')
+    if !empty(m)
+      let model = s:SolventModel(m[1])
+      if !empty(model)
+        call s:LoadSolvents()
+        let solvents = map(copy(g:orca_solvents[model]),
+                         \ {_, s -> {'word': s, 'user_data': 'solvent'}})
+        if !empty(solvents)
+          call complete(col + 1, solvents)
+          return
+        endif
+      endif
+    endif
+  endif
+
   if ch !~# '\w' | return | endif
 
   " Walk back to the start of the current word
@@ -633,6 +713,21 @@ function! s:AutoTrigger()
     return
   endif
 
+  " Block solvent-value context while typing: 'smdsolvent Wat|'
+  let m = matchlist(strpart(line, 0, start), '^\s*\(\w\+\)\s\+$\c')
+  if !empty(m)
+    let model = s:SolventModel(m[1])
+    if !empty(model)
+      call s:LoadSolvents()
+      let solvents = map(s:FilterList(g:orca_solvents[model], base),
+                       \ {_, s -> {'word': s, 'user_data': 'solvent'}})
+      if !empty(solvents)
+        call complete(start + 1, solvents)
+        return
+      endif
+    endif
+  endif
+
   " Inside a block
   let matches = s:Candidates(base)
   if !empty(matches)
@@ -645,6 +740,14 @@ endfunction
 function! s:MaybeSkeleton()
   let item = v:completed_item
   if empty(item) | return | endif
+
+  " After a solvent completion on a ! line, add closing ) if missing
+  if get(item, 'user_data', '') ==# 'solvent' && getline('.') =~# '^\s*!'
+    if getline('.')[col('.') - 1] !=# ')'
+      call feedkeys(')', 'n')
+    endif
+    return
+  endif
 
   " After a .gbw completion on a %moinp line, add closing " if not present
   if getline('.') =~? '^\s*%moinp\s'
@@ -665,6 +768,7 @@ endfunction
 function! OrcaComplete(findstart, base)
   if a:findstart
     let s:completing_block = 0
+    let s:completing_solvent = ''
     let col = col('.') - 1
     let line = getline('.')
     " On ! lines use whitespace as the word boundary (same as auto-trigger)
@@ -672,6 +776,16 @@ function! OrcaComplete(findstart, base)
       while col > 0 && line[col - 1] =~# '\S'
         let col -= 1
       endwhile
+      " If inside a solvent parens, return position after the (
+      let token = strpart(line, col, col('.') - 1 - col)
+      let paren = stridx(token, '(')
+      if paren >= 0
+        let model = s:SolventModel(strpart(token, 0, paren))
+        if !empty(model)
+          let s:completing_solvent = model
+          return col + paren + 1
+        endif
+      endif
       return col
     endif
     while col > 0 && line[col - 1] =~# '\w'
@@ -679,12 +793,23 @@ function! OrcaComplete(findstart, base)
     endwhile
     if col > 0 && line[col - 1] ==# '%'
       let s:completing_block = 1
+    else
+      " Check for block solvent-value context: 'smdsolvent |'
+      let m = matchlist(strpart(line, 0, col), '^\s*\(\w\+\)\s\+$\c')
+      if !empty(m)
+        let s:completing_solvent = s:SolventModel(m[1])
+      endif
     endif
     return col
   endif
 
   if s:completing_block
     return s:BlockNameItems(a:base)
+  endif
+  if !empty(s:completing_solvent)
+    call s:LoadSolvents()
+    return map(s:FilterList(g:orca_solvents[s:completing_solvent], a:base),
+             \ {_, s -> {'word': s, 'user_data': 'solvent'}})
   endif
   return s:Candidates(a:base)
 endfunction
