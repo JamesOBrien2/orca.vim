@@ -1892,6 +1892,7 @@ syn keyword orcaBlockParam contained CIMTHRESH
 syn keyword orcaBlockParam contained HessName modetype MList RSteps LSteps ddnc dxyz EnStep
 syn keyword orcaBlockParam contained CoreOrb CoreOrbSOC RIXSOrb RIXSOrbOp RIXSOrbSOC MaxNVirt DoXAS
 syn keyword orcaBlockParam contained Shell_PQN
+syn keyword orcaBlockParam contained UseGeneralContraction PartialGCFlag FockFlag RIJFlag Prescreening ExtentOpt
 
 " Keep %block headers highlighted as blocks when a block name is also a valid
 " parameter elsewhere, e.g. %mm vs %method MM.

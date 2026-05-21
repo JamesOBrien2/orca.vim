@@ -465,6 +465,10 @@ if !exists("g:orca_block_params")
 
   let g:orca_block_params['lft'] = ['NEl', 'Shell_PQN', 'Mult', 'NRoots']
 
+  let g:orca_block_params['shark'] = [
+    \ 'UseGeneralContraction', 'Printlevel', 'PartialGCFlag', 'FockFlag',
+    \ 'RIJFlag', 'Prescreening', 'ExtentOpt']
+
 endif
 
 " ─── Simple keyword list (! line) ────────────────────────────────────────────
