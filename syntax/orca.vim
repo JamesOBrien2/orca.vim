@@ -62,6 +62,7 @@ syn match orcaKeyword contained "\<\(NO\)\?LSHIFT\>"
 syn match orcaKeyword contained "\<\(\(VERY\)\?SLOW\|NORMAL\|EASY\)CONV\>"
 syn keyword orcaKeyword contained PATOM EHTANO PMODEL HCORE HUECKEL UNITMATRIXGUESS MOREAD
 syn match orcaKeyword contained "\<\(NO\)\?AUTOSTART\>"
+syn keyword orcaKeyword contained NoRI NoRIJCOSX NoLibint NoDIIS NoSOSCF NoTRAH NoRICO NoDamp NoLShift NoAutoStart
 syn keyword orcaKeyword contained USEGRAMSCHMIDT
 syn match orcaKeyword contained "\<AVAS(TM3D)\>"
 syn keyword orcaKeyword contained HF
@@ -581,6 +582,7 @@ syn keyword orcaKeyword contained NOFINALGRIDX USEFINALGRIDX USESFITTING NOSFITT
 syn match orcaKeyword contained "\<DEFGRID\(1\|2\|3\)\>"
 syn keyword orcaKeyword contained REFGRID
 syn match orcaKeyword contained "\<\(NO\)\?XCFUN\>"
+syn keyword orcaKeyword contained NoXCFUN
 syn keyword orcaKeyword contained NL
 syn match orcaKeyword contained "\<SCNL\(_OLD\)\?\>"
 syn keyword orcaKeyword contained NOVDW VDW VDW10 VDW3 VDW06 VDW04 VDW10BJ VDW3BJ
@@ -951,6 +953,7 @@ syn keyword orcaKeyword contained CI-sr-ctLDA CI-sr-ctPBE CI-sr-ctPBE0
 " ORCA 6.x SCF and analysis keywords
 syn keyword orcaKeyword contained DELTASCF LEANSCF NOLEANSCF MIXGUESS BUPO
 syn match orcaKeyword contained "\<\(NO\)\?AUTOTRAH\>"
+syn keyword orcaKeyword contained NoAutoTRAH
 syn keyword orcaKeyword contained ADLD ADEX MBIS RESP DRACO DBOC VCD
 syn match orcaKeyword contained "\<SMD\>\%((\)\@!"
 syn keyword orcaKeyword contained SMD18

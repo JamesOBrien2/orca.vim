@@ -478,12 +478,17 @@ function! s:LoadSimpleKeywords()
       let rest = substitute(l, '^syn keyword orca\(Keyword\|Basis\) contained\s\+', '', '')
       call extend(keywords, split(rest, '\s\+'))
     elseif l =~# '^syn match orca\(Keyword\|Basis\) contained '
-      " Extract literal keyword from \<WORD\> patterns. Patterns containing
-      " Vim regex metacharacters (e.g. \( \| ) have backslashes inside the
-      " word, so [^\\]* stops immediately and matchstr returns '', which we skip.
-      let kw = matchstr(l, '"\\<\zs[^\\]*\ze\\>"')
-      if !empty(kw)
-        call add(keywords, kw)
+      " Handle \(NO\)\?WORD patterns: emit both WORD and NOWORD.
+      let base = matchstr(l, '"\\<\\(NO\\)\\?\zs[A-Z][A-Z0-9]*\ze\\>"')
+      if !empty(base)
+        call add(keywords, base)
+        call add(keywords, 'NO' . base)
+      else
+        " Extract literal keyword from simple \<WORD\> patterns (no metacharacters).
+        let kw = matchstr(l, '"\\<\zs[^\\]*\ze\\>"')
+        if !empty(kw)
+          call add(keywords, kw)
+        endif
       endif
     endif
   endfor
