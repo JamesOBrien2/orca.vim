@@ -1873,13 +1873,13 @@ syn keyword orcaBlockParam contained NotAssigned NucleoticAcid SeqBackbone SEQNA
 syn keyword orcaBlockParam contained Water COORDSTYPE DERHSOC HESSIAN MODE STEPSIZE degenThresh doRaman gridMax gridMin
 syn keyword orcaBlockParam contained inputfile keepData magfld nGrid temperature DoEDA FRAG1 FRAG1_C FRAG1_FS FRAG1_M FRAG1_METHODFILE FRAG1_SF FRAG2
 syn keyword orcaBlockParam contained FRAG2_C FRAG2_M FRAG2_METHODFILE FRAG2_SF MO2 Pauli
-syn keyword orcaBlockParam contained NImages NEB_TS_Image Restart_ALLXYZFile Restart_GBW_BaseName CheckSCFConv
+syn keyword orcaBlockParam contained Product TS NImages NEB_TS_Image Restart_ALLXYZFile Restart_GBW_BaseName CheckSCFConv
 syn keyword orcaBlockParam contained Product_PDBFile TS_PDBFile Free_End NSteps_FoundIntermediate AbortIf_FoundIntermediate
 syn keyword orcaBlockParam contained NPTS_Interpol Interpolation Prepare_Frags Max_Frag_Dist Bond_Cutoff
 syn keyword orcaBlockParam contained Tangent SpringType SpringConst SpringConst2 Energy_Weighted PerpSpring LLT_Cos
 syn keyword orcaBlockParam contained Quatern Fix_center Remove_extern_Force Free_End_Type Free_End_EC Free_End_EC_End Free_End_Kappa
-syn keyword orcaBlockParam contained ConvType NEB_TS Tol_MaxFP_I Tol_RMSFP_I Tol_MaxF_CI Tol_RMSF_CI Tol_Turn_On_CI
-syn keyword orcaBlockParam contained Tol_Scale Reparam_type Reparam Tol_Reparam Opt_Method Maxmove
+syn keyword orcaBlockParam contained ConvType CI NEB_TS Tol_MaxFP_I Tol_RMSFP_I Tol_MaxF_CI Tol_RMSF_CI Tol_Turn_On_CI
+syn keyword orcaBlockParam contained Tol_Scale Reparam_type Reparam Tol_Reparam Opt_Method Maxmove Local
 syn keyword orcaBlockParam contained LBFGS_Mem LBFGS_DR LBFGS_Restart_On_Maxmove LBFGS_Reparam_On_Restart LBFGS_Precondition
 syn keyword orcaBlockParam contained FIRE_INITIAL_DAMP FIRE_DAMP_DECR FIRE_STEP_INCR FIRE_STEP_DECR FIRE_MAX_STEP FIRE_RETENTION
 syn keyword orcaBlockParam contained Tol_Turn_On_Zoom Zoom_Offset Zoom_Auto Zoom_Alpha Zoom_Interpolation Zoom_PrintFullTrj
