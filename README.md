@@ -56,6 +56,9 @@ ftdetect/orca.vim → ~/.vim/ftdetect/orca.vim
 indent/orca.vim   → ~/.vim/indent/orca.vim
 ```
 
+
+One-line execution to do this easily in bash: `for d in syntax ftplugin ftdetect indent; do mkdir -p "$HOME/.vim/$d" && cp "$d/orca.vim" "$HOME/.vim/$d/orca.vim"; done`
+
 ### Filetype detection
 
 The plugin detects `.inp` and `.orca` files automatically. If needed, add to your `vimrc`:

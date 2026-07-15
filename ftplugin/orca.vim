@@ -583,6 +583,20 @@ endfunction
 " Inline directives that look like blocks but have no 'end' and no skeleton.
 let s:inline_directives = ['maxcore', 'moinp', 'moread']
 
+" Block keywords that take a quoted filename; value is the glob suffix used for
+" file completion (e.g. '*.xyz' means complete filenames ending in .xyz).
+let s:file_spec_keywords = {
+  \ 'product':          '*.xyz',
+  \ 'ts':               '*.xyz',
+  \ 'neb_end_xyzfile':  '*.xyz',
+  \ 'restart_allxyzfile': '*.allxyz',
+  \ 'inhessname':       '*.hess',
+  \ 'hess_filename':    '*.hess',
+  \ 'product_pdbfile':  '*.pdb',
+  \ 'ts_pdbfile':       '*.pdb',
+  \ 'orcafffilename':   '*.prms',
+\ }
+
 " Completion items for block names. Full blocks carry user_data so MaybeSkeleton
 " inserts the skeleton; inline directives don't.
 function! s:BlockNameItems(base)
@@ -612,6 +626,16 @@ function! s:IsMOInpLine()
   return before =~? '^\s*%moinp\s'
 endfunction
 
+" Returns the glob suffix (e.g. '*.xyz') when the cursor is in the filename
+" position of a block keyword like 'Product "..."' or 'InHessName "..."'.
+" Returns '' if the line doesn't match any known file-spec keyword.
+function! s:FileSpecGlob()
+  let before = strpart(getline('.'), 0, col('.') - 1)
+  let m = matchlist(before, '^\s*\(\w\+\)\s')
+  if empty(m) | return '' | endif
+  return get(s:file_spec_keywords, tolower(m[1]), '')
+endfunction
+
 " Candidates for the current cursor context (bang line or inside a block).
 function! s:Candidates(base)
   let line = getline('.')
@@ -624,6 +648,12 @@ function! s:Candidates(base)
   if s:IsMOInpLine()
     let dir = expand('%:p:h')
     return map(glob(dir . '/' . a:base . '*.gbw', 0, 1), {_, f -> fnamemodify(f, ':t')})
+  endif
+
+  let l:fglob = s:FileSpecGlob()
+  if !empty(l:fglob)
+    let dir = expand('%:p:h')
+    return map(glob(dir . '/' . a:base . l:fglob, 0, 1), {_, f -> fnamemodify(f, ':t')})
   endif
 
   let block = s:DetectBlock()
@@ -734,6 +764,26 @@ function! s:AutoTrigger()
     " which calls s:Candidates → s:IsMOInpLine path for prefix filtering
   endif
 
+  " Block file-spec keywords: auto-insert "" on space, complete on " or \w
+  let l:fglob = s:FileSpecGlob()
+  if !empty(l:fglob)
+    if ch ==# ' ' && getline('.') =~? '^\s*\w\+\s*$'
+      " First space after keyword (no value yet): insert "" and park cursor inside
+      call feedkeys('""' . "\<Left>" . "\<C-x>\<C-o>", 'n')
+      return
+    endif
+    if ch ==# '"'
+      " Opening quote typed manually: show all matching files
+      let matches = s:Candidates('')
+      if !empty(matches)
+        call complete(col + 1, matches)
+      endif
+      return
+    endif
+    " \w chars inside quotes fall through to the general handler which calls
+    " s:Candidates → s:FileSpecGlob path for prefix-filtered completion
+  endif
+
   " Block solvent-value context triggered by space: 'smdsolvent |'
   if ch ==# ' '
     let m = matchlist(strpart(line, 0, col - 1), '^\s*\(\w\+\)\s*$\c')
@@ -805,8 +855,16 @@ function! s:MaybeSkeleton()
     return
   endif
 
-  " After a .gbw completion on a %moinp line, add closing " if not present
+  " After a filename completion on a %moinp line, add closing " if not present
   if getline('.') =~? '^\s*%moinp\s'
+    if !empty(get(item, 'word', '')) && getline('.')[col('.') - 1] !=# '"'
+      call feedkeys('"', 'n')
+    endif
+    return
+  endif
+
+  " After a filename completion on a file-spec keyword line, add closing "
+  if !empty(s:FileSpecGlob())
     if !empty(get(item, 'word', '')) && getline('.')[col('.') - 1] !=# '"'
       call feedkeys('"', 'n')
     endif
