@@ -548,6 +548,29 @@ endfunction
 
 " ─── Completion helpers ───────────────────────────────────────────────────────
 
+if !exists('g:orca_compound_keywords')
+  let g:orca_compound_keywords = [
+        \ 'Variable', 'Dataset', 'Geometry', 'GOAT', 'Timer',
+        \ 'For', 'From', 'To', 'Do', 'EndFor', 'Break', 'Continue',
+        \ 'If', 'Then', 'Else', 'EndIf',
+        \ 'New_Step', 'Step_End', 'NewGeom', 'Read_Geom', 'ReadMOs',
+        \ 'ReadProperty', 'Read', 'Alias', 'With', 'Basenames',
+        \ 'Abort', 'End', 'EndRun', 'GoTo',
+        \ 'OpenFile', 'CloseFile', 'Write2File', 'Write2String', 'Print',
+        \ 'Sys_cmd', 'GetNumOfInstances',
+        \ 'Diagonalize', 'InvertMatrix', 'Mat_p_Mat', 'Mat_x_Mat', 'Mat_x_Scal',
+        \ 'MakeReferenceFromDir', 'BohrToAngs', 'CreateBSSE', 'CreateFragments',
+        \ 'DisplaceAtom', 'FollowNormalMode', 'GetAngle', 'GetAtomicNumbers',
+        \ 'GetBondDistance', 'GetCartesians', 'GetGhostAtoms', 'GetNumOfAtoms',
+        \ 'MoveAtomToCenter', 'RemoveAtoms', 'RemoveElements', 'WriteXYZFile',
+        \ 'Get_Energy', 'Get_Num_Of_Geometries', 'ParseEnsembleFile', 'Set_Basename',
+        \ 'GetBasename', 'GetChar', 'GetSuffix',
+        \ 'Last', 'Reset', 'Start', 'Stop', 'Total',
+        \ 'GetBool', 'GetDim1', 'GetDim2', 'GetDouble', 'GetInteger',
+        \ 'GetSize', 'GetString', 'PrintMatrix',
+        \ ]
+endif
+
 function! s:FilterList(list, base)
   if a:base ==# ''
     return copy(a:list)
@@ -581,7 +604,7 @@ function! s:DetectBlock()
 endfunction
 
 " Inline directives that look like blocks but have no 'end' and no skeleton.
-let s:inline_directives = ['maxcore', 'moinp', 'moread']
+let s:inline_directives = ['compound', 'maxcore', 'moinp', 'moread']
 
 " Block keywords that take a quoted filename; value is the glob suffix used for
 " file completion (e.g. '*.xyz' means complete filenames ending in .xyz).
@@ -626,6 +649,12 @@ function! s:IsMOInpLine()
   return before =~? '^\s*%moinp\s'
 endfunction
 
+" True when cursor is past %compound (ready for the .cmp filename).
+function! s:IsCompoundLine()
+  let before = strpart(getline('.'), 0, col('.') - 1)
+  return before =~? '^\s*%compound\s'
+endfunction
+
 " Returns the glob suffix (e.g. '*.xyz') when the cursor is in the filename
 " position of a block keyword like 'Product "..."' or 'InHessName "..."'.
 " Returns '' if the line doesn't match any known file-spec keyword.
@@ -640,6 +669,10 @@ endfunction
 function! s:Candidates(base)
   let line = getline('.')
 
+  if expand('%:e') ==? 'cmp'
+    return s:FilterList(g:orca_compound_keywords, a:base)
+  endif
+
   if line =~# '^\s*!'
     call s:LoadSimpleKeywords()
     return s:FilterList(g:orca_simple_keywords, a:base)
@@ -650,6 +683,11 @@ function! s:Candidates(base)
     return map(glob(dir . '/' . a:base . '*.gbw', 0, 1), {_, f -> fnamemodify(f, ':t')})
   endif
 
+  if s:IsCompoundLine()
+    let dir = expand('%:p:h')
+    return map(glob(dir . '/' . a:base . '*.cmp', 0, 1), {_, f -> fnamemodify(f, ':t')})
+  endif
+
   let l:fglob = s:FileSpecGlob()
   if !empty(l:fglob)
     let dir = expand('%:p:h')
@@ -657,6 +695,9 @@ function! s:Candidates(base)
   endif
 
   let block = s:DetectBlock()
+  if block ==# 'compound'
+    return s:FilterList(g:orca_compound_keywords, a:base)
+  endif
   if !empty(block) && has_key(g:orca_block_params, block)
     return s:FilterList(g:orca_block_params[block], a:base)
   endif
@@ -764,6 +805,24 @@ function! s:AutoTrigger()
     " which calls s:Candidates → s:IsMOInpLine path for prefix filtering
   endif
 
+  " %compound file form: auto-insert "" on first space, then complete .cmp
+  if s:IsCompoundLine()
+    if ch ==# ' ' && getline('.') =~? '^\s*%compound\s*$'
+      " First space after %compound: insert "", park cursor inside, trigger omni
+      call feedkeys('""' . "\<Left>" . "\<C-x>\<C-o>", 'n')
+      return
+    endif
+    if ch ==# '"'
+      " Opening quote typed manually: show all cmp files
+      let matches = s:Candidates('')
+      if !empty(matches)
+        call complete(col + 1, matches)
+      endif
+      return
+    endif
+    " Filename characters fall through to the general completion handler.
+  endif
+
   " Block file-spec keywords: auto-insert "" on space, complete on " or \w
   let l:fglob = s:FileSpecGlob()
   if !empty(l:fglob)
@@ -857,6 +916,14 @@ function! s:MaybeSkeleton()
 
   " After a filename completion on a %moinp line, add closing " if not present
   if getline('.') =~? '^\s*%moinp\s'
+    if !empty(get(item, 'word', '')) && getline('.')[col('.') - 1] !=# '"'
+      call feedkeys('"', 'n')
+    endif
+    return
+  endif
+
+  " After a filename completion on a %compound line, add closing " if missing
+  if getline('.') =~? '^\s*%compound\s'
     if !empty(get(item, 'word', '')) && getline('.')[col('.') - 1] !=# '"'
       call feedkeys('"', 'n')
     endif

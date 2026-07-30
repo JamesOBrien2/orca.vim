@@ -14,6 +14,12 @@ Vim plugin for [ORCA quantum chemistry](https://orcaforum.kofo.mpg.de/app.php/po
 - **`* xyzfile`** — geometry coordinate block
 - **Comments** (`#`) — highlighted in dim colour, suppressed from completion
 - Inline directives: `%moinp`, `%maxcore`, `%moread`
+- **Compound scripts** (`.cmp`) — filetype detection plus highlighting and
+  completion for the ORCA 6.1 Compound command set, literals, operators, and
+  scalar or indexed `&{…}` expansions
+- Inline Compound blocks — Compound syntax, completion, and nested control-flow
+  indentation in `%compound … End`/`EndRun`; normal ORCA input remains
+  highlighted inside `New_Step … Step_End`
 
 ### Autocompletion
 
@@ -26,6 +32,8 @@ Context-aware popup completions trigger automatically as you type:
 | Inside `%block ... end` | any word character | block-specific parameters |
 | `* xyzfile 0 1 ` | space after charge/mult | `.xyz` files in buffer directory |
 | `%moinp ` | space after directive | auto-inserts `""`, completes `.gbw` files inside |
+| `%compound ` | space after directive | auto-inserts `""`, completes `.cmp` files inside |
+| Inside a `.cmp` file | any word character | Compound language keywords |
 
 **Tab** accepts the highlighted item and closes the popup. **Shift-Tab** navigates backwards.
 
@@ -61,18 +69,18 @@ One-line execution to do this easily in bash: `for d in syntax ftplugin ftdetect
 
 ### Filetype detection
 
-The plugin detects `.inp` and `.orca` files automatically. If needed, add to your `vimrc`:
+The plugin detects `.inp` and `.cmp` files automatically. If needed, add to your `vimrc`:
 
 ```vim
 au BufRead,BufNewFile *.inp  set filetype=orca
-au BufRead,BufNewFile *.orca set filetype=orca
+au BufRead,BufNewFile *.cmp  set filetype=orca
 ```
 
 For Neovim:
 
 ```lua
 vim.api.nvim_create_autocmd({"BufRead", "BufNewFile"}, {
-  pattern = {"*.inp", "*.orca"},
+  pattern = {"*.inp", "*.cmp"},
   command = "set filetype=orca"
 })
 ```

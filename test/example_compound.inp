@@ -1,0 +1,14 @@
+# Inline ORCA Compound block example
+%compound
+  Variable methods = {"B3LYP", "PBE0"};
+
+  For method From 0 To 1 Do
+    New_Step
+      ! &{methods[method]} def2-SVP
+      %base "inline_&{method}"
+      * xyz 0 1
+        H 0.0 0.0 0.0
+      *
+    Step_End
+  EndFor
+End

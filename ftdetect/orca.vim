@@ -1,2 +1,2 @@
-au BufRead,BufNewFile *.inp set filetype=orca
+au BufRead,BufNewFile *.inp,*.cmp set filetype=orca
 

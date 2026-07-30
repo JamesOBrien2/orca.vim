@@ -22,15 +22,30 @@ function! OrcaIndent(lnum)
   let curline  = getline(a:lnum)
   let prevline = getline(prev)
 
-  " 'end' on current line → dedent one level (0 for outer block, indented for sub-blocks)
-  if curline =~? '^\s*end\>'
-    return max(0, indent(prev) - shiftwidth())
+  " 'End' or Compound's 'EndRun' → dedent one level.
+  if curline =~? '^\s*end\%(run\)\?\>'
+    return max([0, indent(prev) - shiftwidth()])
   endif
 
-  " After a %block line → indent one level (4 spaces).
-  " Inline directives (no closing 'end') are excluded.
-  if prevline =~? '^\s*%\w' && prevline !~? '^\s*%\(moinp\|maxcore\|moread\)\>'
+  " Compound branch boundaries and closers align with their opener.
+  if curline =~? '^\s*\%(else\>\|endfor\>\|endif\>\|step_end\>\)'
+    return max([0, indent(prev) - shiftwidth()])
+  endif
+
+  " Compound control-flow and calculation-step openers increase indentation.
+  if prevline =~? '^\s*\%(for\>.*\sdo\|if\>.*\sthen\|else\>\|new_step\>\)'
+    return indent(prev) + shiftwidth()
+  endif
+
+  " A bare %compound starts an inline Compound block. The file form does not.
+  if prevline =~? '^\s*%compound\s*$'
     return shiftwidth()
+  endif
+
+  " After a normal %block line → indent one level relative to its header.
+  " Inline directives and file-form %compound are excluded.
+  if prevline =~? '^\s*%\w' && prevline !~? '^\s*%\(compound\|moinp\|maxcore\|moread\)\>'
+    return indent(prev) + shiftwidth()
   endif
 
   " Keep previous indent

@@ -1,0 +1,14 @@
+# Standalone ORCA Compound script example
+Variable methods = {"B3LYP", "PBE0"};
+Variable elements = {"H", "O"};
+
+For el From 0 To 1 Do
+  New_Step
+    ! &{methods[el]} def2-SVP
+    %base "compound_&{el}"
+    * xyz 0 1
+      &{elements[el]} 0.0 0.0 0.0
+    *
+  Step_End
+EndFor
+End

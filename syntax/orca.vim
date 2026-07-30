@@ -8,10 +8,57 @@ syn case ignore
 syn iskeyword @,48-57,_,-
 
 " ============================================================
+" Compound scripts (*.cmp)
+" ============================================================
+if !exists('g:orca_compound_keywords')
+  let g:orca_compound_keywords = [
+        \ 'Variable', 'Dataset', 'Geometry', 'GOAT', 'Timer',
+        \ 'For', 'From', 'To', 'Do', 'EndFor', 'Break', 'Continue',
+        \ 'If', 'Then', 'Else', 'EndIf',
+        \ 'New_Step', 'Step_End', 'NewGeom', 'Read_Geom', 'ReadMOs',
+        \ 'ReadProperty', 'Read', 'Alias', 'With', 'Basenames',
+        \ 'Abort', 'End', 'EndRun', 'GoTo',
+        \ 'OpenFile', 'CloseFile', 'Write2File', 'Write2String', 'Print',
+        \ 'Sys_cmd', 'GetNumOfInstances',
+        \ 'Diagonalize', 'InvertMatrix', 'Mat_p_Mat', 'Mat_x_Mat', 'Mat_x_Scal',
+        \ 'MakeReferenceFromDir', 'BohrToAngs', 'CreateBSSE', 'CreateFragments',
+        \ 'DisplaceAtom', 'FollowNormalMode', 'GetAngle', 'GetAtomicNumbers',
+        \ 'GetBondDistance', 'GetCartesians', 'GetGhostAtoms', 'GetNumOfAtoms',
+        \ 'MoveAtomToCenter', 'RemoveAtoms', 'RemoveElements', 'WriteXYZFile',
+        \ 'Get_Energy', 'Get_Num_Of_Geometries', 'ParseEnsembleFile', 'Set_Basename',
+        \ 'GetBasename', 'GetChar', 'GetSuffix',
+        \ 'Last', 'Reset', 'Start', 'Stop', 'Total',
+        \ 'GetBool', 'GetDim1', 'GetDim2', 'GetDouble', 'GetInteger',
+        \ 'GetSize', 'GetString', 'PrintMatrix',
+        \ ]
+endif
+if expand('%:e') ==? 'cmp'
+  execute 'syn keyword orcaCompoundKeyword ' . join(g:orca_compound_keywords)
+  syn keyword orcaCompoundBoolean true false
+  syn keyword orcaCompoundOperator and or
+  syn match orcaCompoundOperator "\S\@<=\%(<=\|>=\|[+*/^<>=-]\)"
+  syn match orcaCompoundOperator "\s\zs\%(<=\|>=\|[+*/^<>=-]\)\ze\s"
+  syn match orcaCompoundOperator "\s\zs[+-]\ze\d"
+  syn match orcaCompoundDelimiter "[{}(),;.:]"
+  syn match orcaCompoundDelimiter "\[\|\]"
+  syn match orcaCompoundExpansion "&{[^}]\+}"
+endif
+
+" Contained forms used in inline %compound ... End blocks.
+execute 'syn keyword orcaCompoundKeyword contained ' . join(g:orca_compound_keywords)
+syn keyword orcaCompoundOperator contained and or
+syn match orcaCompoundOperator contained "\S\@<=\%(<=\|>=\|[+*/^<>=-]\)"
+syn match orcaCompoundOperator contained "\s\zs\%(<=\|>=\|[+*/^<>=-]\)\ze\s"
+syn match orcaCompoundOperator contained "\s\zs[+-]\ze\d"
+syn match orcaCompoundDelimiter contained "[{}(),;.:]"
+syn match orcaCompoundDelimiter contained "\[\|\]"
+syn match orcaCompoundExpansion contained "&{[^}]\+}"
+
+" ============================================================
 " Simple keyword line (! ...)
 " ============================================================
 syn match simpleKeyword "!.*$" transparent
-         \ contains=orcaKeyword,orcaComment,misplacedBang,simpleBang,orcaBasis
+         \ contains=orcaKeyword,orcaComment,misplacedBang,simpleBang,orcaBasis,orcaCompoundExpansion
 syn match simpleBang contained "!.*$"me=s+1
 
 " ============================================================
@@ -1262,6 +1309,7 @@ syn keyword orcaBasis contained PCH-1 PCH-2 PCH-3 PCH-4 AUG-PCH-1 AUG-PCH-2 AUG-
 " ============================================================
 " Block directives (% ... end)
 " - Inline directives: %maxcore, %moread (no end)
+" - File-form %compound is inline; bare %compound opens a Compound block.
 " - Paired regions: all others
 " To add a new block:
 "   1. append its name to the methodBlock start= alternation below
@@ -1270,8 +1318,22 @@ syn keyword orcaBasis contained PCH-1 PCH-2 PCH-3 PCH-4 AUG-PCH-1 AUG-PCH-2 AUG-
 syn match orcaBlock "%maxcore\>" contains=startBlock
 syn match orcaBlock "%moread\>" contains=startBlock
 syn match orcaBlock "%moinp\>" contains=startBlock
+syn match orcaBlock "%compound\>" contains=startBlock
 
-" block directive regions
+" Compound has its own region so its language groups do not leak into normal
+" ORCA blocks such as %scf or %geom. The column-zero terminator deliberately
+" ignores indented End tokens belonging to blocks embedded in New_Step.
+syn region orcaCompoundBlock
+         \ start="%compound\s*$"
+         \ end="^end\%(run\)\?\>"
+         \ transparent keepend extend fold
+         \ contains=simpleKeyword,startBlock,endBlock,orcaBlock,orcaNumber,orcaString,orcaFloat,
+         \ orcaMethodInt,orcaMethodBool,orcaMethodReal,orcaMethodString,
+         \ orcaMethodAlias,orcaMethodLogical,orcaBlockParam,orcaCompoundKeyword,
+         \ orcaCompoundOperator,orcaCompoundDelimiter,
+         \ orcaCompoundExpansion,orcaComment
+
+" Normal block directive regions.
 " end= matches 'end' only at column 0 (no leading whitespace), so indented
 " 'end' tokens closing sub-blocks (e.g. CASDFT...end, Constraints...end)
 " do not close the outer block region.
@@ -1281,7 +1343,7 @@ syn region methodBlock
          \ start="%\(coords\|output\|ci\|plots\|parameters\|ndoparas\|rel\|dkh\|pal\|cosmo\|rr\)"
          \ start="%\(eprnmr\|loc\|elprop\|casscf\|mcrpa\|mdci\|dlpnocc\|mm\|mtr\|xes\|chelpg\)"
          \ start="%\(numgrad\|mecp\|ecp\|rocis\|mrcc\|cipsi\|ice\|iceci\|md\|nbo\|lft\|autoci\)"
-         \ start="%\(cpcm\|cim\|compound\|neb\|irc\|anmr\|cregen\|confscript\|anmrrc\|qmmm\)"
+         \ start="%\(cpcm\|cim\|neb\|irc\|anmr\|cregen\|confscript\|anmrrc\|qmmm\)"
          \ start="%\(conical\|ecrism\|shark\|symmetry\|sym\|xtb\|goat\|docker\|solvator\)"
          \ start="%\(casresp\|frag\|casdft\|mcd\|qgprop\|magrelax\|eda\)"
          \ end="^end\>"
@@ -1632,7 +1694,7 @@ syn keyword orcaBlockParam contained NBOKEYLIST COREKEYLIST NRTSTRKEYLIST NPEPAK
 syn match orcaBlockHeader "^%\w\+" contained containedin=methodBlock transparent contains=startBlock,orcaBlock
 
 syn match orcaComment "#[^#]*\(#\|$\)"
-syn region orcaString start=+"+ end=+"+
+syn region orcaString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=orcaCompoundExpansion
 syn match orcaNumber	display "\<\d\+\>"
 syn match orcaFloat display "\<\d\+\(\.\d\+\)\?\(e[-+]\=\d\+\)\=\>"
 
@@ -2796,3 +2858,8 @@ hi def link orcaMethodString Special
 hi def link orcaMethodAlias Special
 hi def link orcaBlockParam Special
 hi def link orcaMethodLogical Boolean
+hi def link orcaCompoundKeyword Keyword
+hi def link orcaCompoundExpansion Identifier
+hi def link orcaCompoundBoolean Boolean
+hi def link orcaCompoundOperator Operator
+hi def link orcaCompoundDelimiter Delimiter
