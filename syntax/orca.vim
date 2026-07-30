@@ -1261,7 +1261,9 @@ syn keyword orcaBasis contained PCH-1 PCH-2 PCH-3 PCH-4 AUG-PCH-1 AUG-PCH-2 AUG-
 
 " ============================================================
 " Block directives (% ... end)
-" - Inline directives: %maxcore, %moread (no end)
+" - Inline directives: %maxcore, %moread, %moinp (no end)
+"   These must not open methodBlock regions, or they swallow highlighting
+"   until the next column-zero 'end'.
 " - Paired regions: all others
 " To add a new block:
 "   1. append its name to the methodBlock start= alternation below
@@ -1277,7 +1279,7 @@ syn match orcaBlock "%moinp\>" contains=startBlock
 " do not close the outer block region.
 " To add a new block: add its name to the alternation below AND to orcaBlock above.
 syn region methodBlock
-         \ start="%\(method\|basis\|scf\|mp2\|cis\|tddft\|mrci\|geom\|freq\|vpt2\|esd\|dftmrci\|moinp\)"
+         \ start="%\(method\|basis\|scf\|mp2\|cis\|tddft\|mrci\|geom\|freq\|vpt2\|esd\|dftmrci\)"
          \ start="%\(coords\|output\|ci\|plots\|parameters\|ndoparas\|rel\|dkh\|pal\|cosmo\|rr\)"
          \ start="%\(eprnmr\|loc\|elprop\|casscf\|mcrpa\|mdci\|dlpnocc\|mm\|mtr\|xes\|chelpg\)"
          \ start="%\(numgrad\|mecp\|ecp\|rocis\|mrcc\|cipsi\|ice\|iceci\|md\|nbo\|lft\|autoci\)"
