@@ -954,7 +954,7 @@ syn keyword orcaKeyword contained CI-sr-ctLDA CI-sr-ctPBE CI-sr-ctPBE0
 syn keyword orcaKeyword contained DELTASCF LEANSCF NOLEANSCF MIXGUESS BUPO
 syn match orcaKeyword contained "\<\(NO\)\?AUTOTRAH\>"
 syn keyword orcaKeyword contained NoAutoTRAH
-syn keyword orcaKeyword contained ADLD ADEX MBIS RESP DRACO DBOC VCD SMD
+syn keyword orcaKeyword contained ADLD ADEX MBIS RESP DRACO DBOC VCD
 syn match orcaKeyword contained "\<SMD\>\%((\)\@!"
 syn keyword orcaKeyword contained SMD18
 syn keyword orcaKeyword contained COVALED
@@ -965,7 +965,7 @@ syn keyword orcaKeyword contained SlowConv VerySlowConv NormalConv EasyConv
 " Basis sets
 " Add new basis set names here.
 " ============================================================
-syn keyword orcaBasis contained DEF2-SD SDD LANL1 LANL2 DEF2ECP SK-MCDHF-RSC DEFECP DHFECP
+syn keyword orcaBasis contained DEF2-SD SDD LANL1 LANL2 DEF2ECP DEF2-ECP SK-MCDHF-RSC DEFECP DHFECP
 syn keyword orcaBasis contained HAYWADT 3-21G 3-21GSP 4-22GSP
 syn match orcaBasis contained "\<6-311G(2D,2P)\>"
 syn match orcaBasis contained "\<6-311G(2D)\>"
@@ -1288,7 +1288,7 @@ syn region methodBlock
          \ transparent keepend extend fold
          \ contains=startBlock,endBlock,orcaBlock,orcaNumber,orcaString,orcaFloat,
          \ orcaMethodInt,orcaMethodBool,orcaMethodReal,orcaMethodString,
-         \ orcaMethodAlias,orcaMethodLogical,orcaBlockParam,orcaComment
+         \ orcaMethodAlias,orcaMethodLogical,orcaBlockParam,orcaBasis,orcaComment
 
 " ============================================================
 " Block parameters (inside % ... end blocks)
@@ -1309,7 +1309,7 @@ syn keyword orcaMethodInt contained GRIDPRUNING_FIN WEIGHTSCHEME_FIN GRID FINALG
 syn keyword orcaMethodInt contained TDDFTGRAD_Z_SOLVER Z_MAXITER Z_MAXDIIS Z_GRIDXC Z_GRIDX Z_GRIDX_RHS Z_COSX_ALG
 
 syn keyword orcaMethodBool contained CHECKFROZENCORE USESYMMETRY USESYM SYMRELAX SYMNOCOORDINATETRANSFORM DOMP2 DOMREOM DOORBSELECT
-syn keyword orcaMethodBool contained USELIBINT USESHARK SHARKUSEGENERALCONTRACTION RANGESEPEXX SWITCHTOSOSCF REDUCEPRINT ALLOWRHF RI
+syn keyword orcaMethodBool contained USELIBINT USESHARK SHARKUSEGENERALCONTRACTION SWITCHTOSOSCF REDUCEPRINT ALLOWRHF RI
 syn keyword orcaMethodBool contained DOADFT HGRIDREDUCED ROTINVARIANT REDUCEPMODELGRID VDWROTINVARIANT DFTXC_IsNumWD DFTXC_IsNumWG XC_IsNumWD
 syn keyword orcaMethodBool contained XC_IsNumWG XCIsNumWD XCIsNumWG NewDFTHess DOEQ USEGRIDX NEWGRIDX USEFINALGRIDX
 syn keyword orcaMethodBool contained USEGRIDX3 USESFITTING COSX_FULLSYMMETRY USEQGRADFIT DOROBUST DOSFITSTYLE COSX_PARTIALCONTRACTION COSX_ROTINVARIANT
@@ -1317,7 +1317,7 @@ syn keyword orcaMethodBool contained PRINTGRADCOMP DOWDERIVS HGRIDREDUCED_FIN RO
 syn match orcaMethodBool contained "\<GCP.D3MINIS\>"
 syn keyword orcaMethodBool contained GRACLB94 GRACLB PROPFILE WRITEONLYINITIALPROPERTYFILE STORECISGRAD DONOTCH
 
-syn keyword orcaMethodReal contained SYMTHRESH RANGESEPMU RANGESEPSCAL F12GAMMA F12G_A F12G_D F12ORTHOTHRESH ADFTNRTOL
+syn keyword orcaMethodReal contained SYMTHRESH RANGESEPMU RANGESEPEXX RANGESEPSCAL F12GAMMA F12G_A F12G_D F12ORTHOTHRESH ADFTNRTOL
 syn keyword orcaMethodReal contained ADFTXALPHA INTACC NTHETAMAX BFCUT WEIGHTCUT WDTHRESH DENSCUTRATIO VDWINTACC
 syn keyword orcaMethodReal contained VDWDENSTCUT VDWDISTTCUT SPECIALGRIDINTACC INTACC_X INTACCX SINVPIVCDTHRESH SINVTHRESH INTACC_X_FIN
 syn keyword orcaMethodReal contained INTACCX_FIN INTACC_FIN NTHETAMAX_FIN DFTPAR XALPHA XBETA XKAPPA XLB94
@@ -1407,6 +1407,8 @@ syn match orcaMethodAlias contained "\<INDO_\(1\|2\|S\)\>"
 syn match orcaMethodAlias contained "\<ZNDDO_\(1\|2\)\>"
 syn match orcaMethodAlias contained "\<NDDO_\(1\|2\|MK\)\>"
 syn keyword orcaMethodAlias contained MNDO AM1 PM3 MNDO_D MP2 GAMESS
+syn keyword orcaMethodAlias contained _AOBLAS ACCCI B88 BERENDSEN C2V CIPSI D3BJ FMATRIX FULLTRAFO GFN2 HIRSHFELD LYP
+syn keyword orcaMethodAlias contained NEVPT2 NORMAL REDUNDANT RFO RHF SSANDSO SUPERCI TIGHT UNRELAXED VDW_GAUSSIAN
 
 " orcaBlock is defined after orcaMethodAlias so it wins the priority tie
 " for words that appear in both (e.g. GEOM, SCAN, METHOD).
@@ -1414,7 +1416,9 @@ syn keyword orcaBlock contained method basis scf mp2 cis tddft mrci geom moinp
 syn keyword orcaBlock contained freq vpt2 esd dftmrci coords output ci plots
 syn keyword orcaBlock contained parameters ndoparas rel dkh pal cosmo rr eprnmr
 syn keyword orcaBlock contained loc elprop casscf mcrpa mdci dlpnocc mm mtr
-syn keyword orcaBlock contained xes chelpg numgrad mecp ecp rocis mrcc cipsi
+syn keyword orcaBlock contained xes chelpg numgrad mecp ecp rocis mrcc
+" CIPSI is also an ICEType value, so only treat it as a block after `%`.
+syn match orcaBlock "^%cipsi\>" containedin=methodBlock contains=startBlock
 syn keyword orcaBlock contained ice iceci md nbo lft autoci cpcm cim
 syn keyword orcaBlock contained compound neb irc anmr cregen confscript anmrrc qmmm
 syn keyword orcaBlock contained conical ecrism shark symmetry sym xtb goat docker
@@ -1597,7 +1601,9 @@ syn keyword orcaBlockParam contained NCS Polar ORCA_ESD AABackbone AASCFineGrain
 syn keyword orcaBlockParam contained Backbone Connectivity Definition Deleted DoInterFragBonds Ext_lib Extend Extlib
 syn keyword orcaBlockParam contained FragProc FunctionalGroups FuseAtomPairs FuseByAtoms NABackbone NABBFineGrained NASideChains NAME
 syn keyword orcaBlockParam contained NotAssigned NucleoticAcid SeqBackbone SEQNABackbone Solvents STOREFRAGS TopolFile Usetopology
-syn keyword orcaBlockParam contained Water COORDSTYPE DERHSOC HESSIAN MODE STEPSIZE degenThresh doRaman gridMax gridMin
+syn keyword orcaBlockParam contained COORDSTYPE DERHSOC HESSIAN MODE STEPSIZE degenThresh doRaman gridMax gridMin
+" Water is user data after `solvent`, but remains an option name at line start.
+syn match orcaBlockParam contained "^\s*Water\>"
 syn keyword orcaBlockParam contained inputfile keepData magfld nGrid temperature DoEDA FRAG1 FRAG1_C FRAG1_FS FRAG1_M FRAG1_METHODFILE FRAG1_SF FRAG2
 syn keyword orcaBlockParam contained FRAG2_C FRAG2_M FRAG2_METHODFILE FRAG2_SF MO2 Pauli
 syn keyword orcaBlockParam contained Product TS NImages NEB_TS_Image Restart_ALLXYZFile Restart_GBW_BaseName CheckSCFConv
@@ -1633,8 +1639,9 @@ syn match orcaBlockHeader "^%\w\+" contained containedin=methodBlock transparent
 
 syn match orcaComment "#[^#]*\(#\|$\)"
 syn region orcaString start=+"+ end=+"+
-syn match orcaNumber	display "\<\d\+\>"
-syn match orcaFloat display "\<\d\+\(\.\d\+\)\?\(e[-+]\=\d\+\)\=\>"
+syn match orcaNumber display "\%(^\|[^[:alnum:]_.-]\)\zs[-+]\=\d\+\ze\%($\|[^[:alnum:]_.-]\)"
+syn match orcaFloat display "\%(^\|[^[:alnum:]_.-]\)\zs[-+]\=\%([0-9]\+\.[0-9]*\|[0-9]*\.[0-9]\+\)\%([eE][-+]\=[0-9]\+\)\=\ze\%($\|[^[:alnum:]_.-]\)"
+syn match orcaFloat display "\%(^\|[^[:alnum:]_.-]\)\zs[-+]\=[0-9]\+[eE][-+]\=[0-9]\+\ze\%($\|[^[:alnum:]_.-]\)"
 
 " ORCA 6.1 model-specific solvent keywords.
 " Source: ORCA 6.1 manual Tables 2.56 and 3.24.
