@@ -34,7 +34,7 @@ if !exists("g:orca_block_params")
     \ 'Convergence', 'ConvForced', 'D3Thresh', 'D4Thresh', 'D5Thresh',
     \ 'Damp', 'DampErr', 'DeltaSCFFromGS', 'DIIS', 'DIISBfac', 'DIISMaxEq',
     \ 'DIISMaxIt', 'DIISStart', 'DirectResetFreq', 'DoMOM',
-    \ 'EasyConv', 'EField', 'EFieldOrigin', 'ETol', 'FOD', 'FracOcc',
+    \ 'EasyConv', 'EField', 'EFieldOrigin', 'ETol', 'FinalMs', 'FOD', 'FracOcc',
     \ 'GTol', 'Guess', 'GuessMix', 'GuessMode', 'HCore', 'HFTyp',
     \ 'IonizeAlpha', 'IonizeBeta', 'KeepInitialRef', 'KeepInts', 'KDIIS',
     \ 'LSCFalpha', 'LSCFbeta', 'LSD', 'LShift', 'MaxC', 'MaxDisk',

@@ -1452,7 +1452,7 @@ syn match coordBlock "\*\s*\(xyz\(file\)\?\|int\|internal\|gzmt\(file\)\?\|gbwfi
 syn keyword orcaBlockParam contained AlphaConf AutoStart AutoTRAH AutoTRAHIter AutoTRAHNInter AutoTRAHTol BetaConf BFCut CNVDIIS
 syn keyword orcaBlockParam contained ConvCheckMode Convergence ConvForced D3Thresh D4Thresh D5Thresh Damp DampErr DeltaSCFFromGS
 syn keyword orcaBlockParam contained DIIS DIISBfac DIISMaxEq DIISMaxIt DIISStart DirectResetFreq DoMOM EasyConv EField
-syn keyword orcaBlockParam contained EFieldOrigin ETol FOD FracOcc GTol Guess GuessMix GuessMode HCore HFTyp
+syn keyword orcaBlockParam contained EFieldOrigin ETol FinalMs FOD FracOcc GTol Guess GuessMix GuessMode HCore HFTyp
 syn keyword orcaBlockParam contained IonizeAlpha IonizeBeta KeepInitialRef KeepInts KDIIS LSCFalpha LSCFbeta LSD LShift MaxC
 syn keyword orcaBlockParam contained MaxDisk MaxIntMem MaxIter MOInp NoDamp NoDIIS NoLShift NormalConv NoSmear NoSOSCF
 syn keyword orcaBlockParam contained NoTRAH PMOM Precond QField ROKS Rotate RTol SCFMode ShiftErr SlowConv SMD
